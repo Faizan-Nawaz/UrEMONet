@@ -306,18 +306,6 @@ class _HomePageState extends State<HomePage> {
         ),
 
         const SizedBox(height: 30),
-        Row(
-          children: [
-            Expanded(
-              child: _buildInfoCard("Tri-Modal Breakdown", Icons.analytics),
-            ),
-            const SizedBox(width: 15),
-            Expanded(
-              child: _buildInfoCard("Audio Pitch Analysis", Icons.waves),
-            ),
-          ],
-        ),
-        const SizedBox(height: 30),
         Center(
           child: FloatingActionButton(
             onPressed: _recordNewVideo,
