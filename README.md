@@ -7,10 +7,11 @@
 │   │   ├── models/        # Data models
 │   │   └── main.dart      # Entry point of app
 │
-└── backend/               # Machine Learning / API logic
-    ├── video to audio extraction.ipynb
-    ├── audio to transcriptions.ipynb
-    ├── xlmr and xgboost on transcriptions.ipynb
-    ├── audio feature extraction and lstm.ipynb
-    ├── video feature extraction and emotion recognition.ipynb
-    └── audio text fusion.ipynb```
+├── backend/               
+│   ├── video to audio extraction.ipynb
+│   ├── audio to transcriptions.ipynb
+│   ├── xlmr and xgboost on transcriptions.ipynb
+│   ├── audio feature extraction and lstm.ipynb
+│   ├── video feature extraction and emotion recognition.ipynb
+│   └── audio text fusion.ipynb
+└── README.md```
