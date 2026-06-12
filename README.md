@@ -1,11 +1,6 @@
 ```UrEMONet/
 │
-├── frontend/              # Flutter mobile application
-│   ├── lib/
-│   │   ├── screens/       # UI screens (Home, Profile, Feature, etc.)
-│   │   ├── widgets/       # Reusable UI components
-│   │   ├── models/        # Data models
-│   │   └── main.dart      # Entry point of app
+├── frontend/              # web app
 │
 ├── backend/               
 │   ├── video to audio extraction.ipynb
