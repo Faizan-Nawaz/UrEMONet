@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
 </head>
 <body style="background-color: var(--hero-bg, #f3f6f1);">
 
@@ -30,9 +34,9 @@
     <li><a href="about.html" id="nav-about">About</a></li>
   </ul>
 
-  <div class="nav-right">
-    <a href="login.html" class="btn-login">Log In</a>
-    <a href="signup.html" class="btn-signup">Sign Up</a>
+  <div id="user-nav-status" style="position: relative; display: flex; align-items: center;">
+    <a href="login.html" class="nav-btn">Log In</a>
+    <a href="signup.html" class="nav-btn primary">Sign Up</a>
   </div>
 </nav>
 

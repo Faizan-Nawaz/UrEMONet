@@ -1,16 +1,145 @@
+// ── FIREBASE INITIALIZATION ──
+// Replace these values with your own Firebase Console Config
+const firebaseConfig = {
+  apiKey: "AIzaSyBW7pQhdtZV9KNPzkKlHmjlsXrRdpcTdgI",
+  authDomain: "uremonet.firebaseapp.com",
+  projectId: "uremonet",
+  storageBucket: "uremonet.firebasestorage.app",
+  messagingSenderId: "718440674680",
+  appId: "1:718440674680:web:a3c4b923cac5b9faf9c48d"
+};
+
+
+// Initialize Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// Track Active User
+let currentUser = null;
+
+auth.onAuthStateChanged((user) => {
+  currentUser = user;
+  updateUserUI(user);
+  if (user) {
+    fetchHistoryFromFirestore();
+  } else {
+    renderGuestHistoryNotice();
+  }
+});
+
+// Update Navbar / UI based on Auth state
+// Dropdown Toggle Functionality
+function toggleUserDropdown() {
+  const dropdown = document.getElementById('user-dropdown-menu');
+  if (dropdown) {
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+}
+window.toggleUserDropdown = toggleUserDropdown;
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  const container = document.getElementById('user-nav-status');
+  const dropdown = document.getElementById('user-dropdown-menu');
+  if (container && dropdown && !container.contains(e.target)) {
+    dropdown.style.display = 'none';
+  }
+});
+
+// Update Navbar / UI based on Auth state
+function updateUserUI(user) {
+  const userContainer = document.getElementById('user-nav-status');
+  if (!userContainer) return;
+
+  if (user) {
+    const userEmail = user.email || 'User';
+    const userName = userEmail.split('@')[0]; // Email se username banaya
+    const initial = userName.charAt(0).toUpperCase(); // Pehla letter avatar ke liye
+
+    userContainer.innerHTML = `
+      <div onclick="toggleUserDropdown()" style="display:flex; align-items:center; gap:0.6rem; cursor:pointer; background:#12281c; padding:0.4rem 0.8rem; border-radius:99px; border:1px solid #22c55e; user-select:none;">
+        <div style="width:32px; height:32px; border-radius:50%; background:#22c55e; color:#0e2a1a; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:0.9rem;">
+          ${initial}
+        </div>
+        <span style="color:#f2f5ee; font-weight:600; font-size:0.9rem;">${userName}</span>
+        <span style="color:#22c55e; font-size:0.7rem;">▼</span>
+      </div>
+
+      <div id="user-dropdown-menu" style="display:none; position:absolute; top:120%; right:0; background:#12281c; border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:0.5rem; width:160px; box-shadow:0 10px 25px rgba(0,0,0,0.5); z-index:1000;">
+        <div style="padding:0.5rem; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:0.4rem;">
+          <p style="margin:0; font-size:0.8rem; color:#9bb8a9;">Signed in as</p>
+          <p style="margin:0; font-size:0.85rem; font-weight:700; color:#86efac; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${userEmail}</p>
+        </div>
+        <button onclick="handleLogout()" style="width:100%; text-align:left; background:transparent; color:#ef4444; border:none; padding:0.5rem; font-weight:600; font-size:0.9rem; cursor:pointer; border-radius:6px; display:flex; align-items:center; gap:0.5rem;">
+          🚪 Log Out
+        </button>
+      </div>
+    `;
+  } else {
+    userContainer.innerHTML = `
+      <a href="login.html" style="color:#22c55e; font-weight:600; text-decoration:none; margin-right:12px;">Log In</a>
+      <a href="signup.html" style="background:#22c55e; color:#0e2a1a; padding:0.5rem 1rem; border-radius:8px; font-weight:700; text-decoration:none;">Sign Up</a>
+    `;
+  }
+}
+
+// ── AUTHENTICATION FUNCTIONS ──
+function handleSignup(event) {
+  event.preventDefault();
+  const email = document.getElementById('signup-email').value;
+  const password = document.getElementById('signup-password').value;
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      alert("Account created successfully!");
+      window.location.href = "detect.html";
+    })
+    .catch((error) => {
+      alert("Signup Error: " + error.message);
+    });
+}
+
+function handleLogin(event) {
+  event.preventDefault();
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+
+  auth.signInWithEmailAndPassword(email, password)
+    .then(() => {
+      alert("Logged in successfully!");
+      window.location.href = "detect.html";
+    })
+    .catch((error) => {
+      alert("Login Error: " + error.message);
+    });
+}
+
+function handleLogout() {
+  auth.signOut().then(() => {
+    alert("Logged out!");
+    window.location.reload();
+  });
+}
+
+window.handleSignup = handleSignup;
+window.handleLogin = handleLogin;
+window.handleLogout = handleLogout;
+
+
 // ── THEME ENGINE ──
 let isDark = localStorage.getItem('theme-preference') !== 'light';
 
 function applyTheme() {
   const root = document.documentElement;
-  
   if (isDark) {
-    root.removeAttribute('data-theme'); // Dark mode CSS
+    root.removeAttribute('data-theme');
   } else {
-    root.setAttribute('data-theme', 'light'); // Light mode CSS
+    root.setAttribute('data-theme', 'light');
   }
 
-  // Icons visibility
   const moonIcon = document.getElementById('theme-icon-moon');
   const sunIcon = document.getElementById('theme-icon-sun');
 
@@ -26,21 +155,9 @@ function toggleTheme() {
   applyTheme();
 }
 
-// Window scope par function attach taake inline onclick har haal mein chale
 window.toggleTheme = toggleTheme;
 
-// Page Load Event
-document.addEventListener('DOMContentLoaded', () => {
-  applyTheme();
-
-  // Alternative safe listener binding
-  const themeBtn = document.getElementById('theme-toggle-btn');
-  if (themeBtn) {
-    themeBtn.addEventListener('click', toggleTheme);
-  }
-});
-
-// ── NAVIGATION (In-Page Navigation Fallback) ──
+// ── NAVIGATION ──
 function showPage(name) {
   const pages = document.querySelectorAll('.page');
   const navBtns = document.querySelectorAll('.nav-links button, .nav-links a');
@@ -57,9 +174,12 @@ function showPage(name) {
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Render history dynamically when switching tabs
     if (name === 'history') {
-      renderHistory();
+      if (currentUser) {
+        fetchHistoryFromFirestore();
+      } else {
+        renderGuestHistoryNotice();
+      }
     }
   }
 }
@@ -92,7 +212,6 @@ function handleFile(e) {
     detectBtn.style.cursor = 'pointer';
   }
 
-  // Reset old cards if re-uploading
   const resultsCard = document.getElementById('results-card');
   const loadingCard = document.getElementById('loading-card');
   
@@ -139,7 +258,7 @@ function clearFile() {
   }
 }
 
-// ── DETECTION (Demo simulation — Replace with real fetch to Flask API) ──
+// ── DETECTION (Demo simulation — Replace with Flask API endpoint when ready) ──
 function runDetection() {
   if (!selectedFile) return;
 
@@ -168,7 +287,7 @@ function runDetection() {
       const prevStep = document.getElementById(steps[i - 1]);
       if (prevStep) {
         prevStep.classList.remove('active');
-        prevStep.style.color = '#22c55e'; // Turn completed step green
+        prevStep.style.color = '#22c55e';
       }
     }
     if (i < steps.length) {
@@ -188,7 +307,6 @@ function runDetection() {
   activateStep();
 }
 
-// Demo result payload
 const DEMO_RESULT = {
   emotion: 'Sad',
   confidence: 72,
@@ -218,7 +336,6 @@ function showResults() {
     loadingCard.classList.remove('show');
   }
 
-  // Set Emotion Text & Confidence
   const resultEmo = document.getElementById('result-emotion');
   const resultConf = document.getElementById('result-conf');
   if (resultEmo) resultEmo.textContent = r.emotion;
@@ -229,7 +346,6 @@ function showResults() {
     if (confFill) confFill.style.width = r.confidence + '%';
   }, 100);
 
-  // Set Modalities Output
   const videoRes = document.getElementById('mod-video-result');
   const videoPct = document.getElementById('mod-video-pct');
   const audioRes = document.getElementById('mod-audio-result');
@@ -244,7 +360,6 @@ function showResults() {
   if (textRes) textRes.textContent = r.modalities.text.emotion;
   if (textPct) textPct.textContent = r.modalities.text.conf + '%';
 
-  // Render Probability Bars
   const probsEl = document.getElementById('prob-bars');
   if (probsEl) {
     probsEl.innerHTML = r.probs.map(p => `
@@ -272,82 +387,119 @@ function showResults() {
     detectBtn.style.cursor = 'pointer';
   }
 
-  // Animate progress bars
   setTimeout(() => {
     document.querySelectorAll('.prob-bar').forEach(b => {
       b.style.width = b.dataset.val + '%';
     });
   }, 100);
 
-  // Save to LocalStorage History
-  if (selectedFile) {
-    addHistory(selectedFile.name, r.emotion, r.confidence);
+  // SAVE TO FIRESTORE ONLY IF USER IS LOGGED IN
+  if (selectedFile && currentUser) {
+    saveToFirestoreHistory(selectedFile.name, r.emotion, r.confidence);
+  } else {
+    console.log("Guest detection: Result displayed, but NOT saved to database.");
   }
 }
 
-// ── HISTORY MANAGEMENT ──
+// ── FIRESTORE HISTORY MANAGEMENT ──
 const emojiMap = { Happy: '😊', Sad: '😢', Anger: '😡', Neutral: '😐', Love: '❤️' };
-let historyItems = JSON.parse(localStorage.getItem('uremonet-history-data')) || [];
 
-function addHistory(filename, emotion, conf) {
-  historyItems.unshift({
+function saveToFirestoreHistory(filename, emotion, conf) {
+  if (!currentUser) return;
+
+  db.collection('history').add({
+    userId: currentUser.uid,
     filename: filename,
     emotion: emotion,
     conf: conf,
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    console.log("Saved to Firebase Firestore!");
+    fetchHistoryFromFirestore();
+  }).catch(err => {
+    console.error("Firestore Save Error: ", err);
   });
-  localStorage.setItem('uremonet-history-data', JSON.stringify(historyItems));
-  renderHistory();
 }
 
-function renderHistory() {
+function fetchHistoryFromFirestore() {
   const empty = document.getElementById('history-empty');
   const list = document.getElementById('history-list');
+  if (!list) return;
 
-  if (!empty || !list) return; // Safety check if user is not on history view
-
-  if (historyItems.length === 0) {
-    empty.style.display = 'block';
-    list.style.display = 'none';
+  if (!currentUser) {
+    renderGuestHistoryNotice();
     return;
   }
 
-  empty.style.display = 'none';
-  list.style.display = 'flex';
-  list.innerHTML = historyItems.map(item => `
-    <div class="history-item" style="display:flex; align-items:center; justify-content:space-between; background:var(--dark-card, #12281c); padding:1rem 1.2rem; border-radius:12px; border:1px solid rgba(255,255,255,0.1); color:#f2f5ee;">
-      <div style="display:flex; align-items:center; gap:1rem;">
-        <div class="history-emo-badge" style="font-size:1.8rem;">${emojiMap[item.emotion] || '🎭'}</div>
-        <div class="history-info">
-          <p class="history-filename" style="font-weight:700; margin:0; color:#f2f5ee;">${item.filename}</p>
-          <p class="history-meta" style="font-size:0.85rem; color:#9bb8a9; margin:0;">${item.time}</p>
-        </div>
+  db.collection('history')
+    .where('userId', '==', currentUser.uid)
+    .get()
+    .then((querySnapshot) => {
+      if (querySnapshot.empty) {
+        if (empty) empty.style.display = 'block';
+        list.style.display = 'none';
+        return;
+      }
+
+      if (empty) empty.style.display = 'none';
+      list.style.display = 'flex';
+
+      let itemsHTML = '';
+      querySnapshot.forEach((doc) => {
+        const item = doc.data();
+        const dateStr = item.timestamp ? new Date(item.timestamp.toDate()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now';
+
+        itemsHTML += `
+          <div class="history-item" style="display:flex; align-items:center; justify-content:space-between; background:var(--dark-card, #12281c); padding:1rem 1.2rem; border-radius:12px; border:1px solid rgba(255,255,255,0.1); color:#f2f5ee; margin-bottom: 0.8rem;">
+            <div style="display:flex; align-items:center; gap:1rem;">
+              <div class="history-emo-badge" style="font-size:1.8rem;">${emojiMap[item.emotion] || '🎭'}</div>
+              <div class="history-info">
+                <p class="history-filename" style="font-weight:700; margin:0; color:#f2f5ee;">${item.filename}</p>
+                <p class="history-meta" style="font-size:0.85rem; color:#9bb8a9; margin:0;">${dateStr}</p>
+              </div>
+            </div>
+            <div class="history-result" style="text-align:right;">
+              <p class="history-emotion" style="font-weight:700; color:#86efac; margin:0;">${item.emotion}</p>
+              <p class="history-conf" style="font-size:0.85rem; color:#9bb8a9; margin:0;">${item.conf}%</p>
+            </div>
+          </div>
+        `;
+      });
+      list.innerHTML = itemsHTML;
+    });
+}
+
+function renderGuestHistoryNotice() {
+  const empty = document.getElementById('history-empty');
+  const list = document.getElementById('history-list');
+
+  if (empty) empty.style.display = 'none';
+  if (list) {
+    list.style.display = 'block';
+    list.innerHTML = `
+      <div style="text-align:center; padding:3rem 1rem; background:#12281c; border-radius:16px; border:1px solid rgba(255,255,255,0.1); color:#f2f5ee;">
+        <h3 style="color:#22c55e; margin-bottom:0.5rem;">Guest Mode Active</h3>
+        <p style="color:#9bb8a9; margin-bottom:1.5rem;">You are currently not logged in. Log in to save and view your emotion prediction history across devices.</p>
+        <a href="login.html" style="background:#22c55e; color:#0e2a1a; padding:0.6rem 1.2rem; border-radius:8px; font-weight:700; text-decoration:none;">Log In Now</a>
       </div>
-      <div class="history-result" style="text-align:right;">
-        <p class="history-emotion" style="font-weight:700; color:#86efac; margin:0;">${item.emotion}</p>
-        <p class="history-conf" style="font-size:0.85rem; color:#9bb8a9; margin:0;">${item.conf}%</p>
-      </div>
-    </div>
-  `).join('');
+    `;
+  }
 }
 
 function clearAllHistory() {
-  if (confirm("Do you want to clear all prediction history?")) {
-    historyItems = [];
-    localStorage.removeItem('uremonet-history-data');
-    renderHistory();
+  if (!currentUser) return;
+  if (confirm("Do you want to clear all your prediction history from database?")) {
+    db.collection('history').where('userId', '==', currentUser.uid).get().then(snapshot => {
+      snapshot.forEach(doc => doc.ref.delete());
+      fetchHistoryFromFirestore();
+    });
   }
 }
 
 // ── DOM INITIALIZATION ──
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Theme application
   applyTheme();
 
-  // 2. Initial History Render
-  renderHistory();
-
-  // 3. Drag and Drop Auto-Binding for Upload Zone (if present)
   const dropZone = document.getElementById('upload-zone') || document.getElementById('drop-zone');
   if (dropZone) {
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
