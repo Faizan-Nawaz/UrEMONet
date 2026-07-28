@@ -11,6 +11,8 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <script src="script.js" defer></script>
 </head>
 <body>
 
@@ -33,9 +35,21 @@
     <li><a href="about.html" id="nav-about">About</a></li>
   </ul>
 
+  <!-- Updated User Area Container -->
   <div id="user-nav-status" class="nav-user-area">
-    <a href="login.html" class="nav-btn btn-login">Log In</a>
-    <a href="signup.html" class="nav-btn btn-signup">Sign Up</a>
+    
+    <!-- State 1: when logged out -->
+    <div id="logged-out-view" class="auth-group nav-hidden">
+      <a href="login.html" class="nav-btn btn-login">Log In</a>
+      <a href="signup.html" class="nav-btn btn-signup">Sign Up</a>
+    </div>
+
+    <!-- State 2: logged in -->
+    <div id="logged-in-view" class="auth-group nav-hidden">
+      <span id="nav-username" class="user-name">User</span>
+      <button id="logout-btn" class="nav-btn btn-logout">Logout</button>
+    </div>
+
   </div>
 </nav>
 
@@ -103,6 +117,5 @@
   </div>
 </div>
 
-<script src="script.js"></script>
 </body>
 </html>

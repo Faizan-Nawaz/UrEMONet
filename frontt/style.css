@@ -132,6 +132,27 @@ nav {
   background-color: #16a34a;
 }
 
+
+/* Unnecessary flicker roknay ke liye default hidden */
+.nav-hidden {
+  display: none !important;
+}
+
+/* Flex layout active states ke liye */
+.auth-group {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Buttons ke darmiyan space */
+}
+
+/* Nav user area ki sizing fix karein taaki shift na ho */
+.nav-user-area {
+  min-width: 180px; /* Outer width Reserve rakhne ke liye */
+  min-height: 40px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 /* ── HERO SECTION (Desktop View) ── */
 .hero-container {
   position: relative;

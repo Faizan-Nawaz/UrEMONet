@@ -484,3 +484,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+
+
+
+// Ye function DOM tayar hone par execution timing delay kiye bina chalega
+document.addEventListener("DOMContentLoaded", function () {
+  // LocalStorage / SessionStorage se login status check karein
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"; 
+  const username = localStorage.getItem("username") || "User";
+
+  const loggedOutView = document.getElementById("logged-out-view");
+  const loggedInView = document.getElementById("logged-in-view");
+  const navUsername = document.getElementById("nav-username");
+
+  if (isLoggedIn) {
+    if (navUsername) navUsername.textContent = username;
+    if (loggedInView) loggedInView.classList.remove("nav-hidden");
+  } else {
+    if (loggedOutView) loggedOutView.classList.remove("nav-hidden");
+  }
+
+  // Logout button event listener
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function () {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("username");
+      window.location.reload(); // Page refresh to update state
+    });
+  }
+});
