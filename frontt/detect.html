@@ -6,21 +6,19 @@
   <title>Emotion Detection — UrEMONet</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body style="background-color: var(--hero-bg, #f3f6f1);">
 
 <nav>
   <a class="nav-logo" href="index.html">
     <div class="nav-logo-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="Black" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 4C12 9 15 12 20 12C15 12 12 15 12 20C12 15 9 12 4 12C9 12 12 9 12 4Z" fill="none" />
-    
-            <circle cx="5.5" cy="17.5" r="2.2" fill="none" />
-    
-            <path d="M18 4.5H22M20 2.5V6.5" stroke="Black" stroke-width="1.9" />
-        </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 4C12 9 15 12 20 12C15 12 12 15 12 20C12 15 9 12 4 12C9 12 12 9 12 4Z" />
+        <circle cx="5.5" cy="17.5" r="2.2" />
+        <path d="M18 4.5H22M20 2.5V6.5" stroke-width="1.9" />
+      </svg>
     </div>
     <span>UrEMONet</span>
   </a>
@@ -32,115 +30,117 @@
     <li><a href="about.html" id="nav-about">About</a></li>
   </ul>
 
-  <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
-    <svg id="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-    </svg>
-    <svg id="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-      <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-    </svg>
-  </button>
+  <div class="nav-right">
+    <a href="login.html" class="btn-login">Log In</a>
+    <a href="signup.html" class="btn-signup">Sign Up</a>
+  </div>
 </nav>
 
-<div class="page active" id="page-detect">
-  <div class="page-header">
-    <h1>Emotion Detection</h1>
-    <p>Upload a video and let multimodal AI analyze emotion.</p>
+<!-- Page background set to light (#f3f6f1) instead of dark section -->
+<!-- Soft Light Mint/Green Background -->
+<div class="light-container-page" id="page-detect" style="min-height: 85vh; padding: 3rem 1.5rem; background-color: #f7f8f7;">
+  
+  <div class="page-header" style="text-align: center; margin-bottom: 2.5rem;">
+    <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--hero-text-main, #0c1c13); margin-bottom: 0.5rem;">Emotion Detection</h1>
+    <p style="color: var(--hero-text-muted, #4d6354); font-size: 1.1rem;">Upload a video and let multimodal AI analyze emotion.</p>
   </div>
-  <div class="detect-container">
-    <div class="upload-card fade-in">
-      <div class="upload-zone" id="upload-zone">
-        <input type="file" id="file-input" accept="video/mp4,video/avi,video/mov,video/webm" onchange="handleFile(event)" />
-        <div class="upload-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+
+  <div class="detect-container" style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
+    
+    <!-- Upload Card (Stays Dark Green for Card Contrast) -->
+    <div class="upload-card feature-card" style="text-align: center; background-color: var(--dark-card, #12281c); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem;">
+      <div class="upload-zone" id="upload-zone" style="border: 2px dashed rgba(255, 255, 255, 0.2); padding: 3rem 2rem; border-radius: 12px; cursor: pointer; position: relative; background: rgba(0, 0, 0, 0.15);">
+        <input type="file" id="file-input" accept="video/mp4,video/avi,video/mov,video/webm" onchange="handleFile(event)" style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;" />
+        <div class="upload-icon feature-icon" style="margin: 0 auto 1rem auto; background-color: #a8c3b0; border-radius: 50%; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#12281c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
         </div>
-        <h3>Click to upload video</h3>
-        <span>MP4, AVI, MOV, WEBM supported</span>
+        <h3 style="color: #f2f5ee; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.4rem;">Click to upload video</h3>
+        <span style="color: #9bb8a9; font-size: 0.9rem;">MP4, AVI, MOV, WEBM supported</span>
       </div>
 
-      <div class="file-preview" id="file-preview">
-        <div class="file-preview-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      <div class="file-preview" id="file-preview" style="display: none; align-items: center; gap: 1rem; margin-top: 1.5rem; padding: 1rem; background: #1b3528; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+        <div class="file-preview-icon" style="color: #22c55e;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
         </div>
-        <div class="file-preview-info">
-          <p class="file-preview-name" id="file-name">filename.mp4</p>
-          <p class="file-preview-size" id="file-size">0 MB</p>
+        <div class="file-preview-info" style="text-align: left; flex: 1;">
+          <p class="file-preview-name" id="file-name" style="font-weight: 700; color: #f2f5ee;">filename.mp4</p>
+          <p class="file-preview-size" id="file-size" style="font-size: 0.85rem; color: #9bb8a9;">0 MB</p>
         </div>
       </div>
 
-      <div class="detect-actions">
-        <button class="detect-btn" id="detect-btn" onclick="runDetection()" disabled>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <!-- Actions Area with High-Contrast Buttons -->
+      <div class="detect-actions" style="margin-top: 1.8rem; display: flex; gap: 1rem; justify-content: center; align-items: center;">
+        
+        <!-- Dark Green / High Contrast Primary Button -->
+        <button class="btn-detect-primary" id="detect-btn" onclick="runDetection()" disabled style="background-color: #0e2a1a; color: #ffffff; padding: 0.85rem 2.2rem; border-radius: 10px; font-weight: 700; font-size: 1rem; border: 1px solid #22c55e; cursor: not-allowed; opacity: 0.6; display: inline-flex; align-items: center; gap: 0.6rem; transition: all 0.2s ease;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           Detect Emotion
         </button>
-        <button class="clear-btn" onclick="clearFile()" title="Clear">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+
+        <!-- Clear / Delete Button with Crisp Red Accent -->
+        <button class="btn-clear-action" onclick="clearFile()" title="Clear File" style="background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; color: #fca5a5; padding: 0.85rem; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s ease;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
         </button>
       </div>
     </div>
 
-    <div class="loading-card" id="loading-card">
-      <div class="loading-spinner"></div>
-      <p style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:16px">Analyzing your video...</p>
-      <div class="loading-steps">
-        <div class="loading-step" id="step-video">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+    <!-- Loading Card -->
+    <div class="loading-card feature-card" id="loading-card" style="display: none; text-align: center; background-color: var(--dark-card, #12281c); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem;">
+      <p style="font-size:1.1rem; font-weight:600; color:#f2f5ee; margin-bottom:1.5rem">Analyzing your video...</p>
+      <div class="loading-steps" style="display: flex; flex-direction: column; gap: 0.8rem; text-align: left;">
+        <div class="loading-step" id="step-video" style="color: #9bb8a9; display: flex; align-items: center; gap: 0.8rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
           Extracting video frames
         </div>
-        <div class="loading-step" id="step-audio">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg>
+        <div class="loading-step" id="step-audio" style="color: #9bb8a9; display: flex; align-items: center; gap: 0.8rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg>
           Processing audio with Wav2Vec2
         </div>
-        <div class="loading-step" id="step-text">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+        <div class="loading-step" id="step-text" style="color: #9bb8a9; display: flex; align-items: center; gap: 0.8rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
           Transcribing with Whisper + XLM-R
         </div>
-        <div class="loading-step" id="step-fusion">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <div class="loading-step" id="step-fusion" style="color: #9bb8a9; display: flex; align-items: center; gap: 0.8rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           Running fusion model
         </div>
       </div>
     </div>
 
-    <div class="results-card" id="results-card">
-      <div class="result-main">
-        <p class="result-label">Detected emotion</p>
-        <p class="result-emotion" id="result-emotion">Sad</p>
-        <p class="result-conf" id="result-conf">72% confidence</p>
-        <div class="conf-bar"><div class="conf-fill" id="conf-fill" style="width:0%"></div></div>
-      </div>
-
-      <p class="modality-title">Modality breakdown</p>
-      <div class="modality-rows">
-        <div class="mod-row">
-          <div class="mod-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-          </div>
-          <span class="mod-name">Video</span>
-          <span class="mod-result" id="mod-video-result">Sad</span>
-          <span class="mod-pct" id="mod-video-pct">65%</span>
-        </div>
-        <div class="mod-row">
-          <div class="mod-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
-          </div>
-          <span class="mod-name">Audio</span>
-          <span class="mod-result" id="mod-audio-result">Sad</span>
-          <span class="mod-pct" id="mod-audio-pct">78%</span>
-        </div>
-        <div class="mod-row">
-          <div class="mod-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/></svg>
-          </div>
-          <span class="mod-name">Text</span>
-          <span class="mod-result" id="mod-text-result">Neutral</span>
-          <span class="mod-pct" id="mod-text-pct">51%</span>
+    <!-- Results Card -->
+    <div class="results-card feature-card" id="results-card" style="display: none; background-color: var(--dark-card, #12281c); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem;">
+      <div class="result-main" style="text-align: center; margin-bottom: 2rem;">
+        <p class="result-label" style="color: #9bb8a9; font-size: 0.9rem;">Detected emotion</p>
+        <p class="result-emotion" id="result-emotion" style="font-size: 3rem; font-weight: 800; color: #86efac; margin: 0.3rem 0;">Sad</p>
+        <p class="result-conf" id="result-conf" style="color: #9bb8a9; font-weight: 600;">72% confidence</p>
+        <div class="progress-bar" style="max-width: 300px; margin: 0.8rem auto 0 auto; height: 6px; background: #1b3528; border-radius: 99px; overflow: hidden;">
+          <div class="progress-fill" id="conf-fill" style="width:72%; height: 100%; background: #4ade80;"></div>
         </div>
       </div>
 
-      <p class="probs-title">Emotion probabilities</p>
+      <p class="modality-title" style="font-weight: 700; color: #f2f5ee; margin-bottom: 1rem;">Modality breakdown</p>
+      <div class="modality-rows" style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem;">
+        <div class="mod-row" style="display: flex; align-items: center; justify-content: space-between; background: #1b3528; padding: 0.8rem 1rem; border-radius: 8px; color: #f2f5ee;">
+          <span class="mod-name" style="font-weight: 600;">Video</span>
+          <span class="mod-result" id="mod-video-result" style="color: #22c55e;">Sad</span>
+          <span class="mod-pct" id="mod-video-pct" style="color: #9bb8a9;">65%</span>
+        </div>
+        <div class="mod-row" style="display: flex; align-items: center; justify-content: space-between; background: #1b3528; padding: 0.8rem 1rem; border-radius: 8px; color: #f2f5ee;">
+          <span class="mod-name" style="font-weight: 600;">Audio</span>
+          <span class="mod-result" id="mod-audio-result" style="color: #22c55e;">Sad</span>
+          <span class="mod-pct" id="mod-audio-pct" style="color: #9bb8a9;">78%</span>
+        </div>
+        <div class="mod-row" style="display: flex; align-items: center; justify-content: space-between; background: #1b3528; padding: 0.8rem 1rem; border-radius: 8px; color: #f2f5ee;">
+          <span class="mod-name" style="font-weight: 600;">Text</span>
+          <span class="mod-result" id="mod-text-result" style="color: #22c55e;">Neutral</span>
+          <span class="mod-pct" id="mod-text-pct" style="color: #9bb8a9;">51%</span>
+        </div>
+      </div>
+
+      <p class="probs-title" style="font-weight: 700; color: #f2f5ee; margin-bottom: 1rem;">Emotion probabilities</p>
       <div id="prob-bars"></div>
     </div>
+
   </div>
 </div>
 

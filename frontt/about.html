@@ -6,7 +6,7 @@
   <title>About — UrEMONet</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,13 +14,11 @@
 <nav>
   <a class="nav-logo" href="index.html">
     <div class="nav-logo-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="Black" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 4C12 9 15 12 20 12C15 12 12 15 12 20C12 15 9 12 4 12C9 12 12 9 12 4Z" fill="none" />
-    
-            <circle cx="5.5" cy="17.5" r="2.2" fill="none" />
-    
-            <path d="M18 4.5H22M20 2.5V6.5" stroke="Black" stroke-width="1.9" />
-        </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 4C12 9 15 12 20 12C15 12 12 15 12 20C12 15 9 12 4 12C9 12 12 9 12 4Z" />
+        <circle cx="5.5" cy="17.5" r="2.2" />
+        <path d="M18 4.5H22M20 2.5V6.5" stroke-width="1.9" />
+      </svg>
     </div>
     <span>UrEMONet</span>
   </a>
@@ -32,63 +30,73 @@
     <li><a href="about.html" id="nav-about" class="active">About</a></li>
   </ul>
 
-  <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
-    <svg id="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-    </svg>
-    <svg id="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-      <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-    </svg>
-  </button>
+  <div class="nav-right">
+    <a href="login.html" class="btn-login">Log In</a>
+    <a href="signup.html" class="btn-signup">Sign Up</a>
+  </div>
 </nav>
 
-<div class="page active" id="page-about">
-  <div class="page-header" style="text-align:left;max-width:800px;margin:0 auto;padding-left:2rem;padding-right:2rem;">
-    <h1>About UrEMONet</h1>
-    <p style="max-width:620px;line-height:1.7">A multimodal deep learning system for Urdu emotion recognition — built as a Final Year Project using video, audio and text fusion on Urdu drama clips.</p>
+<div class="light-container-page" id="page-detect" style="min-height: 85vh; padding: 3rem 1.5rem; background-color: #f7f8f7;">
+  
+  <!-- Header Text -->
+  <div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem auto;">
+    <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem;">About UrEMONet</h1>
+    <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6;">
+      A multimodal deep learning system for Urdu emotion recognition — built as a Final Year Project using video, audio and text fusion on Urdu drama clips.
+    </p>
   </div>
-  <div class="about-container">
-    <div class="about-grid">
-      <div class="about-card fade-in stagger-1">
-        <div class="about-card-icon">
+
+  <div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.8rem;">
+    
+    <!-- 2x2 Grid (Exact like Image 1) -->
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+      
+      <div class="feature-card">
+        <div class="feature-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
         </div>
         <h3>Multimodal Fusion</h3>
         <p>Combines video frames, speech audio and Urdu text transcriptions using cross-modal projection for accurate emotion prediction.</p>
       </div>
-      <div class="about-card fade-in stagger-2">
-        <div class="about-card-icon">
+
+      <div class="feature-card">
+        <div class="feature-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         </div>
         <h3>Deep Learning Pipeline</h3>
         <p>Powered by MTCNN + FaceNet for video, Wav2Vec2-Urdu for audio, and XLM-RoBERTa for text feature extraction.</p>
       </div>
-      <div class="about-card fade-in stagger-1">
-        <div class="about-card-icon">
+
+      <div class="feature-card">
+        <div class="feature-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
         </div>
         <h3>Urdu Drama Dataset</h3>
         <p>Trained on 8,588 annotated video clips extracted from Urdu drama series, covering 5 emotion classes.</p>
       </div>
-      <div class="about-card fade-in stagger-2">
-        <div class="about-card-icon">
+
+      <div class="feature-card">
+        <div class="feature-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
         </div>
         <h3>Final Year Project</h3>
         <p>Built at University of Sialkot to advance emotion recognition research for low-resource Urdu language.</p>
       </div>
+
     </div>
 
-    <div class="emotions-section fade-in">
-      <h3>Emotions detected</h3>
-      <div class="emotion-tags">
-        <span class="emotion-tag tag-happy">Happy 😊</span>
-        <span class="emotion-tag tag-sad">Sad 😢</span>
-        <span class="emotion-tag tag-angry">Angry 😡</span>
-        <span class="emotion-tag tag-neutral">Neutral 😐</span>
-        <span class="emotion-tag tag-love">Love ❤️</span>
+    <!-- Emotions Detected Card (Exact Colors & Badge styling from Image 1) -->
+    <div class="feature-card" style="width: 100%; padding: 1.8rem 2rem;">
+      <h3 style="font-size: 1.2rem; font-weight: 700; color: white; margin-bottom: 1.2rem;">Emotions detected</h3>
+      <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+        <span style="background: #3e320d; border: 1px solid #d97706; color: #fef08a; padding: 0.45rem 1.1rem; border-radius: 99px; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;">Happy 😊</span>
+        <span style="background: #11263a; border: 1px solid #2563eb; color: #93c5fd; padding: 0.45rem 1.1rem; border-radius: 99px; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;">Sad 😢</span>
+        <span style="background: #3b1212; border: 1px solid #dc2626; color: #fca5a5; padding: 0.45rem 1.1rem; border-radius: 99px; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;">Angry 😡</span>
+        <span style="background: #1e293b; border: 1px solid #64748b; color: #e2e8f0; padding: 0.45rem 1.1rem; border-radius: 99px; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;">Neutral 😐</span>
+        <span style="background: #380d22; border: 1px solid #db2777; color: #fbcfe8; padding: 0.45rem 1.1rem; border-radius: 99px; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem;">Love ❤️</span>
       </div>
     </div>
+
   </div>
 </div>
 
