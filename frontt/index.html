@@ -20,39 +20,30 @@
 
 <!-- Navigation Bar -->
 <nav>
-  <div class="nav-logo">
-    <div class="nav-logo-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 4C12 9 15 12 20 12C15 12 12 15 12 20C12 15 9 12 4 12C9 12 12 9 12 4Z" fill="none" />
-        <circle cx="5.5" cy="17.5" r="2.2" fill="none" />
-        <path d="M18 4.5H22M20 2.5V6.5" stroke-width="1.9" />
-      </svg>
+  <div class="nav-top-row">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 4C12 9 15 12 20 12C15 12 12 15 12 20C12 15 9 12 4 12C9 12 12 9 12 4Z" fill="none" />
+          <circle cx="5.5" cy="17.5" r="2.2" fill="none" />
+          <path d="M18 4.5H22M20 2.5V6.5" stroke-width="1.9" />
+        </svg>
+      </div>
+      <span>UrEMONet</span>
     </div>
-    <span>UrEMONet</span>
-  </div>
-
-  <!-- Mobile menu toggle (pure CSS checkbox hack, no JS needed) -->
-  <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
-  <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle menu">
-    <span></span>
-    <span></span>
-    <span></span>
-  </label>
-
-  <!-- Wraps links + auth buttons so both can collapse into one mobile drawer -->
-  <div class="nav-menu">
-    <ul class="nav-links">
-      <li><a href="index.html" id="nav-home" class="active">Home</a></li>
-      <li><a href="detect.html" id="nav-detect">Detect</a></li>
-      <li><a href="history.html" id="nav-history">History</a></li>
-      <li><a href="about.html" id="nav-about">About</a></li>
-    </ul>
 
     <div id="user-nav-status" style="position: relative; display: flex; align-items: center;">
-      <a href="login.html" class="nav-btn">Log In</a>
-      <a href="signup.html" class="nav-btn primary">Sign Up</a>
+      <a href="login.html" class="nav-btn btn-login">Log In</a>
+      <a href="signup.html" class="nav-btn btn-signup">Sign Up</a>
     </div>
   </div>
+
+  <ul class="nav-links">
+    <li><a href="index.html" id="nav-home" class="active">Home</a></li>
+    <li><a href="detect.html" id="nav-detect">Detect</a></li>
+    <li><a href="history.html" id="nav-history">History</a></li>
+    <li><a href="about.html" id="nav-about">About</a></li>
+  </ul>
 </nav>
 
 <div class="page active" id="page-home">

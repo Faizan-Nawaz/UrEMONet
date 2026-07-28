@@ -36,7 +36,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ── NAVBAR (Dark Background like Image) ── */
+/* ── NAVBAR (Dark Background) ── */
 nav {
   display: flex;
   justify-content: space-between;
@@ -45,7 +45,12 @@ nav {
   background-color: var(--dark-bg);
   color: #ffffff;
   border-bottom: 1px solid var(--dark-border);
-  position: relative;
+}
+
+.nav-top-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .nav-logo {
@@ -69,13 +74,6 @@ nav {
   color: #86efac;
 }
 
-/* nav-menu wraps links + auth buttons so they collapse together on mobile */
-.nav-menu {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
 .nav-links {
   display: flex;
   list-style: none;
@@ -94,6 +92,7 @@ nav {
   font-weight: 500;
   font-size: 0.95rem;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .nav-links a.active, 
@@ -102,71 +101,36 @@ nav {
   color: #ffffff;
 }
 
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.nav-btn {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 99px;
+  transition: all 0.2s ease;
 }
 
 .btn-login {
   color: #ffffff;
-  padding: 0.5rem 1.2rem;
-  border-radius: 99px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-decoration: none;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.2s ease;
+  margin-right: 0.5rem;
 }
 
 .btn-login:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .btn-signup {
   background-color: var(--accent-green);
   color: #ffffff;
-  padding: 0.5rem 1.2rem;
-  border-radius: 99px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: all 0.2s ease;
   box-shadow: 0 2px 10px rgba(34, 197, 94, 0.2);
 }
 
 .btn-signup:hover {
   background-color: #16a34a;
-  transform: translateY(-1px);
 }
 
-/* ── HAMBURGER TOGGLE (hidden on desktop, shown on mobile) ── */
-.nav-toggle-checkbox {
-  display: none;
-}
-
-.nav-toggle-label {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  z-index: 20;
-}
-
-.nav-toggle-label span {
-  display: block;
-  height: 2px;
-  width: 100%;
-  background-color: #ffffff;
-  border-radius: 2px;
-  transition: var(--transition);
-}
-
-/* ── HERO SECTION (Light / White Area) ── */
+/* ── HERO SECTION (Light Area) ── */
 .hero-container {
   position: relative;
   background-color: var(--hero-bg);
@@ -174,7 +138,6 @@ nav {
   overflow: hidden;
 }
 
-/* Curved Soft Green Accent Circle in Top Right */
 .hero-container::after {
   content: '';
   position: absolute;
@@ -263,6 +226,7 @@ nav {
   font-weight: 700;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.6rem;
   box-shadow: 0 4px 14px rgba(21, 56, 35, 0.3);
   transition: transform 0.2s ease, background 0.2s ease;
@@ -281,6 +245,7 @@ nav {
   border-radius: 10px;
   text-decoration: none;
   font-weight: 700;
+  text-align: center;
   transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -293,6 +258,7 @@ nav {
   position: relative;
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .laptop-frame {
@@ -325,13 +291,6 @@ nav {
   justify-content: center;
   position: relative;
   overflow: hidden;
-}
-
-.video-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.85;
 }
 
 .prediction-panel {
@@ -401,7 +360,7 @@ nav {
   box-shadow: 0 10px 20px rgba(0,0,0,0.4);
 }
 
-/* ── LOWER SECTION (Dark Forest Green Area) ── */
+/* ── LOWER SECTION ── */
 .dark-section {
   background-color: var(--dark-bg);
   padding: 5rem 4rem;
@@ -473,7 +432,7 @@ nav {
   line-height: 1.6;
 }
 
-/* Research Banner (Off-white inside dark section like image) */
+/* Research Banner */
 .research-card {
   max-width: 1200px;
   margin: 0 auto;
@@ -522,6 +481,7 @@ nav {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  white-space: nowrap;
   transition: background 0.2s ease;
 }
 
@@ -529,189 +489,135 @@ nav {
   background: rgba(0, 0, 0, 0.05);
 }
 
-/* Responsiveness */
-@media (max-width: 992px) {
-  .hero-split {
-    grid-template-columns: 1fr;
-  }
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
-  nav, .hero-container, .dark-section {
-    padding: 2rem;
-  }
-  .research-card {
-    flex-direction: column;
-    gap: 1.5rem;
-    text-align: center;
-  }
-  .research-info {
-    flex-direction: column;
-  }
-}
 
-/* Enabled State for Detect Button */
-.btn-detect-primary:not([disabled]) {
-  opacity: 1 !important;
-  cursor: pointer !important;
-  background-color: #0e2a1a !important;
-  border-color: #22c55e !important;
-  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.25);
-}
-
-.btn-detect-primary:not([disabled]):hover {
-  background-color: #153e27 !important;
-  transform: translateY(-2px);
-}
-
-/* Clear Button Hover */
-.btn-clear-action:hover {
-  background: rgba(239, 68, 68, 0.25) !important;
-  transform: translateY(-2px);
-}
-
-/* ── MOBILE RESPONSIVE FIXES ── */
+/* ── PERFECT MOBILE RESPONSIVE MEDIA QUERIES ── */
 @media (max-width: 768px) {
-
-  /* 1. Headings: shrink and never overflow */
-  h1, .hero-title, h2 {
-    font-size: 2rem !important;
-    line-height: 1.2 !important;
-    word-break: break-word;
+  
+  /* 1. Navbar Clean Layout (Like Light Theme) */
+  nav {
+    flex-direction: column !important;
+    padding: 0.8rem 1rem !important;
+    gap: 0.8rem !important;
   }
 
-  /* 2. Navbar: collapse into hamburger drawer */
-  nav, .navbar {
-    padding: 0.9rem 1.2rem !important;
-    flex-wrap: nowrap;
-  }
-
-  .nav-toggle-label {
-    display: flex;
-  }
-
-  /* Checked state: turn the 3 bars into an X */
-  .nav-toggle-checkbox:checked ~ .nav-toggle-label span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-  .nav-toggle-checkbox:checked ~ .nav-toggle-label span:nth-child(2) {
-    opacity: 0;
-  }
-  .nav-toggle-checkbox:checked ~ .nav-toggle-label span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
-  }
-
-  /* Drawer: links + auth buttons stack below the navbar, hidden until toggled */
-  .nav-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    background-color: var(--dark-bg);
-    border-bottom: 1px solid var(--dark-border);
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    z-index: 15;
-  }
-
-  .nav-toggle-checkbox:checked ~ .nav-menu {
-    max-height: 420px;
+  .nav-top-row {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .nav-links {
-    flex-direction: column;
-    background: none;
-    border: none;
-    border-radius: 0;
-    gap: 0;
-    padding: 0.5rem 1rem 0;
     width: 100%;
+    justify-content: space-between;
+    overflow-x: auto;
+    padding: 0.3rem 0.5rem !important;
   }
 
   .nav-links a {
-    display: block;
-    padding: 0.8rem 1rem;
-    border-radius: 8px;
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* 2. Hero Section Adjustments */
+  .hero-container {
+    padding: 2rem 1.2rem 3rem 1.2rem !important;
+  }
+
+  .hero-split {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+
+  .hero-left {
     text-align: left;
   }
 
-  #user-nav-status {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.6rem;
-    padding: 1rem;
-    width: 100%;
+  .hero-badge {
+    font-size: 0.75rem !important;
+    padding: 0.35rem 0.8rem !important;
+    margin-bottom: 1.2rem !important;
   }
 
-  .nav-btn {
-    text-align: center;
-    width: 100%;
+  .hero-left h1 {
+    font-size: 2.8rem !important;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.5rem;
   }
 
-  /* 3. Hero: tone down the decorative blob so it doesn't crowd stacked content */
-  .hero-container::after {
-    width: 140%;
-    height: 40%;
-    top: -12%;
-    right: -30%;
-    opacity: 0.45;
+  .hero-subtitle-bold {
+    font-size: 1.1rem !important;
+    margin-bottom: 0.8rem;
   }
 
-  .hero-container {
-    padding: 2rem 1.2rem 3rem !important;
+  .hero-left p {
+    font-size: 0.95rem !important;
+    margin-bottom: 1.8rem;
   }
 
-  /* 4. Hero buttons: fixed selector (was .hero-buttons/.cta-buttons, which don't
-        exist in the markup — the real class is .hero-btns, so this rule was
-        never actually applying) */
+  /* 3. Hero Buttons Mobile Stack */
   .hero-btns {
     flex-direction: column !important;
     width: 100%;
     gap: 0.8rem !important;
   }
 
-  .hero-btns a {
+  .btn-primary, .btn-secondary {
     width: 100% !important;
-    text-align: center;
-    justify-content: center;
+    padding: 0.85rem 1rem !important;
   }
 
-  /* 5. Laptop mockup: stack video + prediction panel instead of squeezing 2 columns */
+  /* 4. Laptop Mockup Scaling (Fit on mobile) */
+  .hero-right {
+    margin-top: 0.5rem;
+  }
+
+  .laptop-frame {
+    max-width: 100% !important;
+    padding: 8px 8px 0 8px;
+    border-radius: 12px 12px 0 0;
+  }
+
   .laptop-screen {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important; /* Stack video and prediction cards */
+    gap: 0.6rem;
+    padding: 0.8rem;
   }
 
   .video-box {
-    height: 140px;
+    height: 120px !important;
   }
 
-  .modalities-mini {
-    grid-column: 1 / -1;
-    grid-template-columns: repeat(3, 1fr);
+  .pred-value {
+    font-size: 1.1rem !important;
   }
 
-  /* 6. Generic container fix */
-  .container, .main-content, #page-detect {
-    padding: 1rem !important;
-    width: 100% !important;
-    box-sizing: border-box;
+  /* 5. Feature Grid & Lower Section */
+  .dark-section {
+    padding: 3rem 1.2rem !important;
   }
 
-  /* 7. Upload box fix */
-  #upload-zone, .upload-card {
-    padding: 1.5rem 1rem !important;
+  .dark-section-title {
+    font-size: 1.8rem !important;
+    margin-bottom: 2rem;
   }
-}
 
-@media (max-width: 420px) {
-  .hero-left h1 {
-    font-size: 2.4rem;
+  .features-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.2rem !important;
   }
-  .hero-subtitle-bold {
-    font-size: 1.15rem;
+
+  .feature-card {
+    padding: 1.5rem !important;
+  }
+
+  .research-card {
+    flex-direction: column !important;
+    text-align: center;
+    padding: 1.5rem 1.2rem !important;
+    gap: 1.2rem !important;
+  }
+
+  .research-info {
+    flex-direction: column !important;
+    gap: 0.8rem !important;
   }
 }
