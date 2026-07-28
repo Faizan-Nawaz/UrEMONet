@@ -1,5 +1,4 @@
 // ── FIREBASE INITIALIZATION ──
-// Replace these values with your own Firebase Console Config
 const firebaseConfig = {
   apiKey: "AIzaSyBW7pQhdtZV9KNPzkKlHmjlsXrRdpcTdgI",
   authDomain: "uremonet.firebaseapp.com",
@@ -9,8 +8,7 @@ const firebaseConfig = {
   appId: "1:718440674680:web:a3c4b923cac5b9faf9c48d"
 };
 
-
-// Initialize Firebase
+// Initialize Firebase safely
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
@@ -23,14 +21,18 @@ let currentUser = null;
 auth.onAuthStateChanged((user) => {
   currentUser = user;
   updateUserUI(user);
-  if (user) {
-    fetchHistoryFromFirestore();
-  } else {
-    renderGuestHistoryNotice();
+  
+  // Current page detection
+  const currentPath = window.location.pathname.split("/").pop() || "index.html";
+  if (currentPath === "history.html" || document.getElementById('history-list')) {
+    if (user) {
+      fetchHistoryFromFirestore();
+    } else {
+      renderGuestHistoryNotice();
+    }
   }
 });
 
-// Update Navbar / UI based on Auth state
 // Dropdown Toggle Functionality
 function toggleUserDropdown() {
   const dropdown = document.getElementById('user-dropdown-menu');
@@ -56,8 +58,8 @@ function updateUserUI(user) {
 
   if (user) {
     const userEmail = user.email || 'User';
-    const userName = userEmail.split('@')[0]; // Email se username banaya
-    const initial = userName.charAt(0).toUpperCase(); // Pehla letter avatar ke liye
+    const userName = userEmail.split('@')[0];
+    const initial = userName.charAt(0).toUpperCase();
 
     userContainer.innerHTML = `
       <div onclick="toggleUserDropdown()" style="display:flex; align-items:center; gap:0.6rem; cursor:pointer; background:#12281c; padding:0.4rem 0.8rem; border-radius:99px; border:1px solid #22c55e; user-select:none;">
@@ -80,8 +82,8 @@ function updateUserUI(user) {
     `;
   } else {
     userContainer.innerHTML = `
-      <a href="login.html" style="color:#22c55e; font-weight:600; text-decoration:none; margin-right:12px;">Log In</a>
-      <a href="signup.html" style="background:#22c55e; color:#0e2a1a; padding:0.5rem 1rem; border-radius:8px; font-weight:700; text-decoration:none;">Sign Up</a>
+      <a href="login.html" class="nav-btn btn-login" style="color:#22c55e; font-weight:600; text-decoration:none; margin-right:12px;">Log In</a>
+      <a href="signup.html" class="nav-btn btn-signup" style="background:#22c55e; color:#0e2a1a; padding:0.5rem 1rem; border-radius:8px; font-weight:700; text-decoration:none;">Sign Up</a>
     `;
   }
 }
@@ -128,60 +130,19 @@ window.handleSignup = handleSignup;
 window.handleLogin = handleLogin;
 window.handleLogout = handleLogout;
 
-
-// ── THEME ENGINE ──
-let isDark = localStorage.getItem('theme-preference') !== 'light';
-
-function applyTheme() {
-  const root = document.documentElement;
-  if (isDark) {
-    root.removeAttribute('data-theme');
-  } else {
-    root.setAttribute('data-theme', 'light');
-  }
-
-  const moonIcon = document.getElementById('theme-icon-moon');
-  const sunIcon = document.getElementById('theme-icon-sun');
-
-  if (moonIcon && sunIcon) {
-    moonIcon.style.display = isDark ? 'none' : 'inline-block';
-    sunIcon.style.display  = isDark ? 'inline-block' : 'none';
-  }
+// ── CARD VISIBILITY HELPER (Mobile Overrides Safe) ──
+function hideCard(card) {
+  if (!card) return;
+  card.style.display = 'none';
+  card.classList.add('hidden');
+  card.classList.remove('show-card');
 }
 
-function toggleTheme() {
-  isDark = !isDark;
-  localStorage.setItem('theme-preference', isDark ? 'dark' : 'light');
-  applyTheme();
-}
-
-window.toggleTheme = toggleTheme;
-
-// ── NAVIGATION ──
-function showPage(name) {
-  const pages = document.querySelectorAll('.page');
-  const navBtns = document.querySelectorAll('.nav-links button, .nav-links a');
-
-  if (pages.length > 0) {
-    pages.forEach(p => p.classList.remove('active'));
-    navBtns.forEach(b => b.classList.remove('active'));
-    
-    const targetPage = document.getElementById('page-' + name);
-    const targetNav = document.getElementById('nav-' + name);
-
-    if (targetPage) targetPage.classList.add('active');
-    if (targetNav) targetNav.classList.add('active');
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    if (name === 'history') {
-      if (currentUser) {
-        fetchHistoryFromFirestore();
-      } else {
-        renderGuestHistoryNotice();
-      }
-    }
-  }
+function showCard(card) {
+  if (!card) return;
+  card.classList.remove('hidden');
+  card.classList.add('show-card');
+  card.style.display = 'block';
 }
 
 // ── FILE HANDLING ──
@@ -203,7 +164,6 @@ function handleFile(e) {
   
   if (filePreviewEl) {
     filePreviewEl.style.display = 'flex';
-    filePreviewEl.classList.add('show');
   }
   
   if (detectBtn) {
@@ -212,17 +172,9 @@ function handleFile(e) {
     detectBtn.style.cursor = 'pointer';
   }
 
-  const resultsCard = document.getElementById('results-card');
-  const loadingCard = document.getElementById('loading-card');
-  
-  if (resultsCard) {
-    resultsCard.style.display = 'none';
-    resultsCard.classList.remove('show');
-  }
-  if (loadingCard) {
-    loadingCard.style.display = 'none';
-    loadingCard.classList.remove('show');
-  }
+  // Hide loading and results cards safely
+  hideCard(document.getElementById('results-card'));
+  hideCard(document.getElementById('loading-card'));
 }
 
 function clearFile() {
@@ -231,15 +183,9 @@ function clearFile() {
   const fileInput = document.getElementById('file-input');
   const filePreviewEl = document.getElementById('file-preview');
   const detectBtn = document.getElementById('detect-btn');
-  const resultsCard = document.getElementById('results-card');
-  const loadingCard = document.getElementById('loading-card');
 
   if (fileInput) fileInput.value = '';
-  
-  if (filePreviewEl) {
-    filePreviewEl.style.display = 'none';
-    filePreviewEl.classList.remove('show');
-  }
+  if (filePreviewEl) filePreviewEl.style.display = 'none';
   
   if (detectBtn) {
     detectBtn.disabled = true;
@@ -247,18 +193,15 @@ function clearFile() {
     detectBtn.style.cursor = 'not-allowed';
   }
   
-  if (resultsCard) {
-    resultsCard.style.display = 'none';
-    resultsCard.classList.remove('show');
-  }
-  
-  if (loadingCard) {
-    loadingCard.style.display = 'none';
-    loadingCard.classList.remove('show');
-  }
+  // Hide loading and results cards safely
+  hideCard(document.getElementById('results-card'));
+  hideCard(document.getElementById('loading-card'));
 }
 
-// ── DETECTION (Demo simulation — Replace with Flask API endpoint when ready) ──
+window.handleFile = handleFile;
+window.clearFile = clearFile;
+
+// ── DETECTION ──
 function runDetection() {
   if (!selectedFile) return;
 
@@ -266,14 +209,11 @@ function runDetection() {
   const loadingCard = document.getElementById('loading-card');
   const detectBtn = document.getElementById('detect-btn');
 
-  if (resultsCard) {
-    resultsCard.style.display = 'none';
-    resultsCard.classList.remove('show');
-  }
+  // Hide results and show loading
+  hideCard(resultsCard);
   
   if (loadingCard) {
-    loadingCard.style.display = 'block';
-    loadingCard.classList.add('show');
+    showCard(loadingCard);
     loadingCard.scrollIntoView({ behavior: 'smooth' });
   }
   
@@ -286,14 +226,12 @@ function runDetection() {
     if (i > 0) {
       const prevStep = document.getElementById(steps[i - 1]);
       if (prevStep) {
-        prevStep.classList.remove('active');
         prevStep.style.color = '#22c55e';
       }
     }
     if (i < steps.length) {
       const currentStep = document.getElementById(steps[i]);
       if (currentStep) {
-        currentStep.classList.add('active');
         currentStep.style.color = '#22c55e';
         currentStep.style.fontWeight = '700';
       }
@@ -306,6 +244,7 @@ function runDetection() {
 
   activateStep();
 }
+window.runDetection = runDetection;
 
 const DEMO_RESULT = {
   emotion: 'Sad',
@@ -331,10 +270,8 @@ function showResults() {
   const resultsCard = document.getElementById('results-card');
   const detectBtn = document.getElementById('detect-btn');
 
-  if (loadingCard) {
-    loadingCard.style.display = 'none';
-    loadingCard.classList.remove('show');
-  }
+  // Hide loading card
+  hideCard(loadingCard);
 
   const resultEmo = document.getElementById('result-emotion');
   const resultConf = document.getElementById('result-conf');
@@ -375,9 +312,9 @@ function showResults() {
     `).join('');
   }
 
+  // Show Results Card
   if (resultsCard) {
-    resultsCard.style.display = 'block';
-    resultsCard.classList.add('show');
+    showCard(resultsCard);
     resultsCard.scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -393,11 +330,9 @@ function showResults() {
     });
   }, 100);
 
-  // SAVE TO FIRESTORE ONLY IF USER IS LOGGED IN
+  // SAVE TO FIRESTORE ONLY IF LOGGED IN
   if (selectedFile && currentUser) {
     saveToFirestoreHistory(selectedFile.name, r.emotion, r.confidence);
-  } else {
-    console.log("Guest detection: Result displayed, but NOT saved to database.");
   }
 }
 
@@ -414,7 +349,6 @@ function saveToFirestoreHistory(filename, emotion, conf) {
     conf: conf,
     timestamp: firebase.firestore.FieldValue.serverTimestamp()
   }).then(() => {
-    console.log("Saved to Firebase Firestore!");
     fetchHistoryFromFirestore();
   }).catch(err => {
     console.error("Firestore Save Error: ", err);
@@ -443,10 +377,16 @@ function fetchHistoryFromFirestore() {
 
       if (empty) empty.style.display = 'none';
       list.style.display = 'flex';
+      list.style.flexDirection = 'column';
+
+      let docsArray = [];
+      querySnapshot.forEach(doc => docsArray.push(doc.data()));
+
+      // Sort client-side safely without needing complex Firestore composite indexes
+      docsArray.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
 
       let itemsHTML = '';
-      querySnapshot.forEach((doc) => {
-        const item = doc.data();
+      docsArray.forEach((item) => {
         const dateStr = item.timestamp ? new Date(item.timestamp.toDate()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now';
 
         itemsHTML += `
@@ -466,6 +406,9 @@ function fetchHistoryFromFirestore() {
         `;
       });
       list.innerHTML = itemsHTML;
+    })
+    .catch(err => {
+      console.error("Firestore Fetch Error:", err);
     });
 }
 
@@ -490,28 +433,35 @@ function clearAllHistory() {
   if (!currentUser) return;
   if (confirm("Do you want to clear all your prediction history from database?")) {
     db.collection('history').where('userId', '==', currentUser.uid).get().then(snapshot => {
-      snapshot.forEach(doc => doc.ref.delete());
+      const batch = db.batch();
+      snapshot.forEach(doc => batch.delete(doc.ref));
+      return batch.commit();
+    }).then(() => {
       fetchHistoryFromFirestore();
     });
   }
 }
+window.clearAllHistory = clearAllHistory;
 
 // ── DOM INITIALIZATION ──
 document.addEventListener('DOMContentLoaded', () => {
-  applyTheme();
+  // Ensure cards start in clean state
+  hideCard(document.getElementById('loading-card'));
+  hideCard(document.getElementById('results-card'));
 
-  const dropZone = document.getElementById('upload-zone') || document.getElementById('drop-zone');
+  // Drag and drop initialization
+  const dropZone = document.getElementById('upload-zone');
   if (dropZone) {
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
       dropZone.addEventListener(eventName, e => e.preventDefault(), false);
     });
 
     ['dragenter', 'dragover'].forEach(eventName => {
-      dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-over'), false);
+      dropZone.addEventListener(eventName, () => dropZone.style.borderColor = '#22c55e', false);
     });
 
     ['dragleave', 'drop'].forEach(eventName => {
-      dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'), false);
+      dropZone.addEventListener(eventName, () => dropZone.style.borderColor = 'rgba(255, 255, 255, 0.2)', false);
     });
 
     dropZone.addEventListener('drop', e => {
@@ -522,18 +472,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-});
 
-// Automatically set 'active' class on navbar links based on current page URL
-document.addEventListener("DOMContentLoaded", () => {
+  // Navbar Active Link Highlighting
   const currentPath = window.location.pathname.split("/").pop() || "index.html";
   const navLinks = document.querySelectorAll(".nav-links a");
 
   navLinks.forEach((link) => {
-    // Remove active class from all
     link.classList.remove("active");
-
-    // Match link href with current URL
     if (link.getAttribute("href") === currentPath) {
       link.classList.add("active");
     }

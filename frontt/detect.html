@@ -51,7 +51,7 @@
   <div class="detect-container" style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
     
     <!-- Upload Card (Stays Dark Green for Card Contrast) -->
-    <div class="upload-card feature-card" style="text-align: center; background-color: var(--dark-card, #12281c); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem;">
+    <div class="upload-card" style="text-align: center; background-color: var(--dark-card, #12281c); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem;">
       <div class="upload-zone" id="upload-zone" style="border: 2px dashed rgba(255, 255, 255, 0.2); padding: 3rem 2rem; border-radius: 12px; cursor: pointer; position: relative; background: rgba(0, 0, 0, 0.15);">
         <input type="file" id="file-input" accept="video/mp4,video/avi,video/mov,video/webm" onchange="handleFile(event)" style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;" />
         <div class="upload-icon feature-icon" style="margin: 0 auto 1rem auto; background-color: #a8c3b0; border-radius: 50%; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;">
@@ -88,7 +88,7 @@
     </div>
 
     <!-- Loading Card -->
-    <div class="loading-card feature-card" id="loading-card" style="display: none; text-align: center; background-color: var(--dark-card, #12281c); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem;">
+    <div class="loading-card" id="loading-card" style="display: none; text-align: center; background-color: var(--dark-card, #12281c); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem;">
       <p style="font-size:1.1rem; font-weight:600; color:#f2f5ee; margin-bottom:1.5rem">Analyzing your video...</p>
       <div class="loading-steps" style="display: flex; flex-direction: column; gap: 0.8rem; text-align: left;">
         <div class="loading-step" id="step-video" style="color: #9bb8a9; display: flex; align-items: center; gap: 0.8rem;">
@@ -111,7 +111,7 @@
     </div>
 
     <!-- Results Card -->
-    <div class="results-card feature-card" id="results-card" style="display: none; background-color: var(--dark-card, #12281c); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem;">
+    <div class="results-card" id="results-card" style="display: none; background-color: var(--dark-card, #12281c); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem;">
       <div class="result-main" style="text-align: center; margin-bottom: 2rem;">
         <p class="result-label" style="color: #9bb8a9; font-size: 0.9rem;">Detected emotion</p>
         <p class="result-emotion" id="result-emotion" style="font-size: 3rem; font-weight: 800; color: #86efac; margin: 0.3rem 0;">Sad</p>
