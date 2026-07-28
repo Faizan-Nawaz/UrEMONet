@@ -537,15 +537,13 @@ nav {
   }
 
   .hero-left {
-    align-items: flex-start !important;
-    text-align: left !important;
-  }
+    align-items: center !important;
+    text-align: center !important;
+}
 
   .hero-badge {
-    font-size: 0.75rem !important;
-    padding: 0.35rem 0.8rem !important;
-    margin-bottom: 1rem !important;
-  }
+    justify-content: center;
+}
 
   .hero-left h1 {
     font-size: 2.8rem !important;
@@ -559,19 +557,13 @@ nav {
   }
 
   .hero-left p {
-    font-size: 0.95rem !important;
-    margin-bottom: 1.5rem;
-  }
+    margin-left: auto;
+    margin-right: auto;
+}
 
-  /* 3. Hero Buttons Mobile Layout */
-  .hero-btns {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap;
-    width: 100% !important;
-    max-width: 100% !important;
-    gap: 0.8rem !important;
-  }
+.hero-btns {
+    justify-content: center !important;
+}
 
   .btn-primary, .btn-secondary {
     width: auto !important;
@@ -626,8 +618,34 @@ nav {
   }
 
   .feature-card {
-    padding: 1.5rem !important;
-  }
+    display: grid !important;
+    grid-template-columns: 42px 1fr;
+    column-gap: 1rem;
+    align-items: start;
+    padding: 1.2rem !important;
+    text-align: left;
+}
+
+/* Icon left side */
+.feature-icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 0 !important;
+    grid-row: span 2;
+}
+
+/* Heading */
+.feature-card h3 {
+    font-size: 1.05rem !important;
+    margin: 0 0 0.35rem 0 !important;
+}
+
+/* Description */
+.feature-card p {
+    font-size: 0.85rem !important;
+    line-height: 1.5;
+    margin: 0 !important;
+}
 
   .research-card {
     flex-direction: column !important;
@@ -636,8 +654,22 @@ nav {
     gap: 1.2rem !important;
   }
 
+  .research-card {
+    padding: 1.2rem !important;
+  }
+  
   .research-info {
-    flex-direction: column !important;
-    gap: 0.8rem !important;
+    gap: 0.9rem !important;
+  }
+  
+  .research-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+  }
+  
+  .research-icon svg {
+    width: 22px;
+    height: 22px;
   }
 }
