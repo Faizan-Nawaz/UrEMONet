@@ -36,8 +36,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ── NAVBAR (Dark Background) ── */
-/* ── NAVBAR (Desktop Layout Fix) ── */
+/* ── NAVBAR (Desktop Layout) ── */
 nav {
   display: flex;
   justify-content: space-between;
@@ -133,37 +132,7 @@ nav {
   background-color: #16a34a;
 }
 
-/* ── MOBILE NAVBAR RESPONSIVE ── */
-@media (max-width: 768px) {
-  nav {
-    flex-wrap: wrap !important;
-    padding: 0.8rem 1rem !important;
-    gap: 0.8rem !important;
-  }
-
-  .nav-logo {
-    order: 1;
-  }
-
-  .nav-user-area {
-    order: 2;
-  }
-
-  .nav-links {
-    order: 3;
-    width: 100%;
-    justify-content: space-between;
-    overflow-x: auto;
-    padding: 0.3rem 0.5rem !important;
-  }
-
-  .nav-links a {
-    padding: 0.4rem 0.8rem !important;
-    font-size: 0.85rem !important;
-  }
-}
-
-/* ── HERO SECTION (Light Area) ── */
+/* ── HERO SECTION (Desktop View) ── */
 .hero-container {
   position: relative;
   background-color: var(--hero-bg);
@@ -197,19 +166,25 @@ nav {
 }
 
 .hero-left {
-    text-align: center !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 
 .hero-badge {
-    font-size: 0.75rem !important;
-    padding: 0.35rem 0.8rem !important;
-    margin-bottom: 1.2rem !important;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--badge-bg);
+  color: var(--brand-green);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 99px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--hero-border);
+}
 
 .hero-badge-dot {
   width: 6px;
@@ -219,40 +194,48 @@ nav {
 }
 
 .hero-left h1 {
-    font-size: 2.8rem !important;
-    letter-spacing: -0.5px;
-    margin-bottom: 0.5rem;
-    text-align: center !important;
-  }
+  font-size: 3.8rem;
+  font-weight: 800;
+  color: var(--hero-text-main);
+  line-height: 1.05;
+  letter-spacing: -1px;
+  margin-bottom: 0.6rem;
+}
 
 .hero-subtitle-bold {
-    font-size: 1.1rem !important;
-    margin-bottom: 0.8rem;
-    text-align: center !important;
-  }
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--hero-text-main);
+  margin-bottom: 1rem;
+}
 
 .hero-left p {
-    font-size: 0.95rem !important;
-    margin-bottom: 1.8rem;
-    text-align: center !important;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  font-size: 1.05rem;
+  color: var(--hero-text-muted);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 480px;
+}
 
 .hero-btns {
-    flex-direction: column !important;
-    width: 100%;
-    max-width: 320px; /* Buttons ko bohot zyada phailne se roknay ke liye */
-    margin: 0 auto !important;
-    gap: 0.8rem !important;
-  }
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
-.btn-primary, .btn-secondary {
-    width: 100% !important;
-    padding: 0.85rem 1rem !important;
-    text-align: center !important;
-    justify-content: center !important;
-  }
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: var(--brand-green);
+  color: #ffffff;
+  padding: 0.9rem 2rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 4px 14px rgba(12, 28, 19, 0.25);
+}
 
 .btn-primary:hover {
   background-color: #0d2617;
@@ -515,19 +498,23 @@ nav {
 /* ── PERFECT MOBILE RESPONSIVE MEDIA QUERIES ── */
 @media (max-width: 768px) {
   
-  /* 1. Navbar Clean Layout (Like Light Theme) */
+  /* 1. Navbar Clean Layout */
   nav {
-    flex-direction: column !important;
+    flex-wrap: wrap !important;
     padding: 0.8rem 1rem !important;
     gap: 0.8rem !important;
   }
 
-  .nav-top-row {
-    width: 100%;
-    justify-content: space-between;
+  .nav-logo {
+    order: 1;
+  }
+
+  .nav-user-area {
+    order: 2;
   }
 
   .nav-links {
+    order: 3;
     width: 100%;
     justify-content: space-between;
     overflow-x: auto;
@@ -539,30 +526,31 @@ nav {
     font-size: 0.85rem !important;
   }
 
-  /* 2. Hero Section Adjustments */
+  /* 2. Hero Section Mobile Fixes */
   .hero-container {
-    padding: 2rem 1.2rem 3rem 1.2rem !important;
+    padding: 2.5rem 1.2rem 3rem 1.2rem !important;
   }
 
   .hero-split {
     grid-template-columns: 1fr !important;
-    gap: 2.5rem !important;
+    gap: 2rem !important;
   }
 
   .hero-left {
-    text-align: left;
+    align-items: flex-start !important;
+    text-align: left !important;
   }
 
   .hero-badge {
     font-size: 0.75rem !important;
     padding: 0.35rem 0.8rem !important;
-    margin-bottom: 1.2rem !important;
+    margin-bottom: 1rem !important;
   }
 
   .hero-left h1 {
     font-size: 2.8rem !important;
     letter-spacing: -0.5px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
 
   .hero-subtitle-bold {
@@ -572,22 +560,27 @@ nav {
 
   .hero-left p {
     font-size: 0.95rem !important;
-    margin-bottom: 1.8rem;
+    margin-bottom: 1.5rem;
   }
 
-  /* 3. Hero Buttons Mobile Stack */
+  /* 3. Hero Buttons Mobile Layout */
   .hero-btns {
-    flex-direction: column !important;
-    width: 100%;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    width: 100% !important;
+    max-width: 100% !important;
     gap: 0.8rem !important;
   }
 
   .btn-primary, .btn-secondary {
-    width: 100% !important;
-    padding: 0.85rem 1rem !important;
+    width: auto !important;
+    padding: 0.75rem 1.2rem !important;
+    font-size: 0.9rem !important;
+    justify-content: center;
   }
 
-  /* 4. Laptop Mockup Scaling (Fit on mobile) */
+  /* 4. Laptop Mockup Scaling */
   .hero-right {
     margin-top: 0.5rem;
   }
@@ -599,17 +592,22 @@ nav {
   }
 
   .laptop-screen {
-    grid-template-columns: 1fr !important; /* Stack video and prediction cards */
+    grid-template-columns: 1fr !important;
     gap: 0.6rem;
     padding: 0.8rem;
   }
 
   .video-box {
-    height: 120px !important;
+    height: 130px !important;
   }
 
   .pred-value {
     font-size: 1.1rem !important;
+  }
+
+  .laptop-base {
+    width: 106% !important;
+    margin-left: -3% !important;
   }
 
   /* 5. Feature Grid & Lower Section */
