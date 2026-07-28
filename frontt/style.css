@@ -647,29 +647,42 @@ nav {
     margin: 0 !important;
 }
 
-  .research-card {
+.research-card {
     flex-direction: column !important;
-    text-align: center;
-    padding: 1.5rem 1.2rem !important;
+    text-align: left !important; 
+    padding: 1.2rem !important;
     gap: 1.2rem !important;
   }
 
-  .research-card {
-    padding: 1.2rem !important;
-  }
-  
   .research-info {
+    flex-direction: row !important; 
+    align-items: flex-start !important;
+    text-align: left !important;
     gap: 0.9rem !important;
   }
-  
+
+  .research-text {
+    text-align: left !important;
+  }
+
   .research-icon {
     width: 44px;
     height: 44px;
     min-width: 44px;
   }
-  
+
   .research-icon svg {
     width: 22px;
     height: 22px;
   }
+ .btn-research {
+  width: 352px;
+  height: 42px;
+  
+  /* Flexbox for centering content horizontally & vertically */
+  display: flex;
+  align-items: center;     
+  justify-content: center; 
+  gap: 0.6rem;            
+}
 }

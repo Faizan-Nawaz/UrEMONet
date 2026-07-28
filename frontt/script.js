@@ -523,3 +523,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// Automatically set 'active' class on navbar links based on current page URL
+document.addEventListener("DOMContentLoaded", () => {
+  const currentPath = window.location.pathname.split("/").pop() || "index.html";
+  const navLinks = document.querySelectorAll(".nav-links a");
+
+  navLinks.forEach((link) => {
+    // Remove active class from all
+    link.classList.remove("active");
+
+    // Match link href with current URL
+    if (link.getAttribute("href") === currentPath) {
+      link.classList.add("active");
+    }
+  });
+});
