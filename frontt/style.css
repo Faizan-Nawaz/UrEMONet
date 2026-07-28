@@ -494,6 +494,13 @@ nav {
   background: rgba(0, 0, 0, 0.05);
 }
 
+/* About Page Desktop Grid */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem !important; /* Pehle 1.5rem tha, gap barha diya he */
+}
+
 
 /* ── PERFECT MOBILE RESPONSIVE MEDIA QUERIES ── */
 @media (max-width: 768px) {
@@ -685,4 +692,124 @@ nav {
   justify-content: center; 
   gap: 0.6rem;            
 }
+
+.light-container-page {
+    padding: 2rem 1rem !important;
+  }
+
+  .page-header h1 {
+    font-size: 1.8rem !important;
+  }
+
+  .page-header p {
+    font-size: 0.95rem !important;
+  }
+
+  /* Upload Card Padding */
+  .upload-card,
+  .loading-card,
+  .results-card {
+    padding: 1.25rem !important;
+    border-radius: 12px !important;
+  }
+
+  /* Upload Zone Adjustments */
+  .upload-zone {
+    padding: 2rem 1rem !important;
+  }
+
+  .upload-zone h3 {
+    font-size: 1.1rem !important;
+  }
+
+  .upload-zone span {
+    font-size: 0.8rem !important;
+  }
+
+  /* Preview File Card */
+  .file-preview {
+    gap: 0.75rem !important;
+    padding: 0.75rem !important;
+  }
+
+  .file-preview-name {
+    font-size: 0.9rem !important;
+    word-break: break-all; /* Filename lambi ho toh wrap ho jaye */
+  }
+
+  /* Action Buttons Grid on Mobile */
+  .detect-actions {
+    flex-direction: row !important;
+    gap: 0.6rem !important;
+    width: 100%;
+  }
+
+  .btn-detect-primary {
+    flex: 1; /* Button baki space cover kare */
+    justify-content: center;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .btn-clear-action {
+    padding: 0.75rem !important;
+  }
+
+  /* Results Card Styling for Small Screens */
+  .result-emotion {
+    font-size: 2.2rem !important;
+  }
+
+  .modality-rows {
+    gap: 0.6rem !important;
+  }
+
+  .mod-row {
+    padding: 0.65rem 0.8rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  .loading-steps {
+    font-size: 0.85rem !important;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr !important; /* Mobile par 1 column karega */
+    gap: 1.2rem !important;
+  }
+
+
+  .upload-card,
+  .loading-card,
+  .results-card {
+    display: block !important;
+    grid-template-columns: none !important;
+  }
+
+  .empty-state {
+    display: block !important;
+    grid-template-columns: none !important;
+  }
+
+
+  .feature-card.emotions-card {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 1.2rem !important;
+  }
+
+  .emotions-card h3 {
+    width: 100% !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .emotions-badges {
+    width: 100% !important;
+    gap: 0.6rem !important;
+  }
+
+  .emotions-badges span {
+    font-size: 0.82rem !important;
+    padding: 0.4rem 0.85rem !important;
+  }
 }
