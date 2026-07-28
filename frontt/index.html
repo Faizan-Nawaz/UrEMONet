@@ -31,16 +31,27 @@
     <span>UrEMONet</span>
   </div>
 
-  <ul class="nav-links">
-    <li><a href="index.html" id="nav-home" class="active">Home</a></li>
-    <li><a href="detect.html" id="nav-detect">Detect</a></li>
-    <li><a href="history.html" id="nav-history">History</a></li>
-    <li><a href="about.html" id="nav-about">About</a></li>
-  </ul>
+  <!-- Mobile menu toggle (pure CSS checkbox hack, no JS needed) -->
+  <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
+  <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </label>
 
-  <div id="user-nav-status" style="position: relative; display: flex; align-items: center;">
-    <a href="login.html" class="nav-btn">Log In</a>
-    <a href="signup.html" class="nav-btn primary">Sign Up</a>
+  <!-- Wraps links + auth buttons so both can collapse into one mobile drawer -->
+  <div class="nav-menu">
+    <ul class="nav-links">
+      <li><a href="index.html" id="nav-home" class="active">Home</a></li>
+      <li><a href="detect.html" id="nav-detect">Detect</a></li>
+      <li><a href="history.html" id="nav-history">History</a></li>
+      <li><a href="about.html" id="nav-about">About</a></li>
+    </ul>
+
+    <div id="user-nav-status" style="position: relative; display: flex; align-items: center;">
+      <a href="login.html" class="nav-btn">Log In</a>
+      <a href="signup.html" class="nav-btn primary">Sign Up</a>
+    </div>
   </div>
 </nav>
 

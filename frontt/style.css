@@ -45,6 +45,7 @@ nav {
   background-color: var(--dark-bg);
   color: #ffffff;
   border-bottom: 1px solid var(--dark-border);
+  position: relative;
 }
 
 .nav-logo {
@@ -66,6 +67,13 @@ nav {
 
 .nav-logo span {
   color: #86efac;
+}
+
+/* nav-menu wraps links + auth buttons so they collapse together on mobile */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .nav-links {
@@ -131,6 +139,31 @@ nav {
 .btn-signup:hover {
   background-color: #16a34a;
   transform: translateY(-1px);
+}
+
+/* ── HAMBURGER TOGGLE (hidden on desktop, shown on mobile) ── */
+.nav-toggle-checkbox {
+  display: none;
+}
+
+.nav-toggle-label {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.nav-toggle-label span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transition: var(--transition);
 }
 
 /* ── HERO SECTION (Light / White Area) ── */
@@ -537,54 +570,148 @@ nav {
   transform: translateY(-2px);
 }
 
-
-
 /* ── MOBILE RESPONSIVE FIXES ── */
 @media (max-width: 768px) {
-  
-  /* 1. Fix Headings Overflow */
+
+  /* 1. Headings: shrink and never overflow */
   h1, .hero-title, h2 {
-    font-size: 2rem !important; /* Mobile par heading choti ho jayegi */
+    font-size: 2rem !important;
     line-height: 1.2 !important;
     word-break: break-word;
   }
 
-  /* 2. Fix Navbar Overflow */
+  /* 2. Navbar: collapse into hamburger drawer */
   nav, .navbar {
-    padding: 0.8rem 1rem !important;
-    flex-wrap: wrap; /* Overlapping roknay ke liye */
+    padding: 0.9rem 1.2rem !important;
+    flex-wrap: nowrap;
+  }
+
+  .nav-toggle-label {
+    display: flex;
+  }
+
+  /* Checked state: turn the 3 bars into an X */
+  .nav-toggle-checkbox:checked ~ .nav-toggle-label span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav-toggle-checkbox:checked ~ .nav-toggle-label span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-toggle-checkbox:checked ~ .nav-toggle-label span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Drawer: links + auth buttons stack below the navbar, hidden until toggled */
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background-color: var(--dark-bg);
+    border-bottom: 1px solid var(--dark-border);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    z-index: 15;
+  }
+
+  .nav-toggle-checkbox:checked ~ .nav-menu {
+    max-height: 420px;
   }
 
   .nav-links {
-    gap: 0.5rem !important;
+    flex-direction: column;
+    background: none;
+    border: none;
+    border-radius: 0;
+    gap: 0;
+    padding: 0.5rem 1rem 0;
+    width: 100%;
   }
 
-  .nav-links a, .nav-links button {
-    padding: 0.4rem 0.6rem !important;
-    font-size: 0.85rem !important;
+  .nav-links a {
+    display: block;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    text-align: left;
   }
 
-  /* 3. Hero Buttons Fix */
-  .hero-buttons, .cta-buttons {
+  #user-nav-status {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .nav-btn {
+    text-align: center;
+    width: 100%;
+  }
+
+  /* 3. Hero: tone down the decorative blob so it doesn't crowd stacked content */
+  .hero-container::after {
+    width: 140%;
+    height: 40%;
+    top: -12%;
+    right: -30%;
+    opacity: 0.45;
+  }
+
+  .hero-container {
+    padding: 2rem 1.2rem 3rem !important;
+  }
+
+  /* 4. Hero buttons: fixed selector (was .hero-buttons/.cta-buttons, which don't
+        exist in the markup — the real class is .hero-btns, so this rule was
+        never actually applying) */
+  .hero-btns {
     flex-direction: column !important;
     width: 100%;
     gap: 0.8rem !important;
   }
 
-  .hero-buttons a, .hero-buttons button {
+  .hero-btns a {
     width: 100% !important;
     text-align: center;
+    justify-content: center;
   }
 
-  /* 4. Fix Cards Container Width */
+  /* 5. Laptop mockup: stack video + prediction panel instead of squeezing 2 columns */
+  .laptop-screen {
+    grid-template-columns: 1fr;
+  }
+
+  .video-box {
+    height: 140px;
+  }
+
+  .modalities-mini {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* 6. Generic container fix */
   .container, .main-content, #page-detect {
     padding: 1rem !important;
     width: 100% !important;
     box-sizing: border-box;
   }
 
-  /* 5. Upload Box Fix */
+  /* 7. Upload box fix */
   #upload-zone, .upload-card {
     padding: 1.5rem 1rem !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-left h1 {
+    font-size: 2.4rem;
+  }
+  .hero-subtitle-bold {
+    font-size: 1.15rem;
   }
 }
