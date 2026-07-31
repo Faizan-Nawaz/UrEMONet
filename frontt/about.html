@@ -36,21 +36,35 @@
   </ul>
 
   <!-- Updated User Area Container -->
-  <div id="user-nav-status" class="nav-user-area">
-    
-    <!-- State 1: when logged out -->
-    <div id="logged-out-view" class="auth-group nav-hidden">
-      <a href="login.html" class="nav-btn btn-login">Log In</a>
-      <a href="signup.html" class="nav-btn btn-signup">Sign Up</a>
+  <div id="user-nav-status" class="nav-user-area" style="visibility:hidden;">
+
+    <div id="logged-out-view" class="auth-group" style="display:none;">
+        <a href="login.html" class="nav-btn btn-login">Log In</a>
+        <a href="signup.html" class="nav-btn btn-signup">Sign Up</a>
     </div>
 
-    <!-- State 2: logged in -->
-    <div id="logged-in-view" class="auth-group nav-hidden">
-      <span id="nav-username" class="user-name">User</span>
-      <button id="logout-btn" class="nav-btn btn-logout">Logout</button>
+    <div id="logged-in-view" class="auth-group" style="display:none;">
+        <div onclick="toggleUserDropdown()" class="user-chip">
+            <div id="user-avatar" class="avatar">U</div>
+
+            <span id="nav-username">User</span>
+
+            <span>▼</span>
+        </div>
+
+        <div id="user-dropdown-menu" class="dropdown-menu" style="display:none;">
+            <div class="dropdown-header">
+                <p>Signed in as</p>
+                <p id="user-email"></p>
+            </div>
+
+            <button onclick="handleLogout()">
+                🚪 Logout
+            </button>
+        </div>
     </div>
 
-  </div>
+</div>
 </nav>
 
 <div class="light-container-page" id="page-detect" style="min-height: 85vh; padding: 3rem 1.5rem; background-color: #f7f8f7;">

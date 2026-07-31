@@ -19,18 +19,38 @@ const db = firebase.firestore();
 let currentUser = null;
 
 auth.onAuthStateChanged((user) => {
+
   currentUser = user;
+
+  if (user) {
+
+    const username = user.displayName || user.email.split("@")[0];
+
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("username", username);
+    localStorage.setItem("email", user.email);
+
+  } else {
+
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username");
+    localStorage.removeItem("email");
+
+  }
+
   updateUserUI(user);
-  
+
   // Current page detection
   const currentPath = window.location.pathname.split("/").pop() || "index.html";
-  if (currentPath === "history.html" || document.getElementById('history-list')) {
+
+  if (currentPath === "history.html" || document.getElementById("history-list")) {
     if (user) {
       fetchHistoryFromFirestore();
     } else {
       renderGuestHistoryNotice();
     }
   }
+
 });
 
 // Dropdown Toggle Functionality
@@ -53,39 +73,53 @@ document.addEventListener('click', (e) => {
 
 // Update Navbar / UI based on Auth state
 function updateUserUI(user) {
-  const userContainer = document.getElementById('user-nav-status');
-  if (!userContainer) return;
 
-  if (user) {
-    const userEmail = user.email || 'User';
-    const userName = userEmail.split('@')[0];
-    const initial = userName.charAt(0).toUpperCase();
+    const loggedOut = document.getElementById("logged-out-view");
+    const loggedIn = document.getElementById("logged-in-view");
 
-    userContainer.innerHTML = `
-      <div onclick="toggleUserDropdown()" style="display:flex; align-items:center; gap:0.6rem; cursor:pointer; background:#12281c; padding:0.4rem 0.8rem; border-radius:99px; border:1px solid #22c55e; user-select:none;">
-        <div style="width:32px; height:32px; border-radius:50%; background:#22c55e; color:#0e2a1a; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:0.9rem;">
-          ${initial}
-        </div>
-        <span style="color:#f2f5ee; font-weight:600; font-size:0.9rem;">${userName}</span>
-        <span style="color:#22c55e; font-size:0.7rem;">▼</span>
-      </div>
+    if (!loggedOut || !loggedIn) return;
 
-      <div id="user-dropdown-menu" style="display:none; position:absolute; top:120%; right:0; background:#12281c; border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:0.5rem; width:160px; box-shadow:0 10px 25px rgba(0,0,0,0.5); z-index:1000;">
-        <div style="padding:0.5rem; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:0.4rem;">
-          <p style="margin:0; font-size:0.8rem; color:#9bb8a9;">Signed in as</p>
-          <p style="margin:0; font-size:0.85rem; font-weight:700; color:#86efac; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${userEmail}</p>
-        </div>
-        <button onclick="handleLogout()" style="width:100%; text-align:left; background:transparent; color:#ef4444; border:none; padding:0.5rem; font-weight:600; font-size:0.9rem; cursor:pointer; border-radius:6px; display:flex; align-items:center; gap:0.5rem;">
-          🚪 Log Out
-        </button>
-      </div>
-    `;
-  } else {
-    userContainer.innerHTML = `
-      <a href="login.html" class="nav-btn btn-login" style="color:#22c55e; font-weight:600; text-decoration:none; margin-right:12px;">Log In</a>
-      <a href="signup.html" class="nav-btn btn-signup" style="background:#22c55e; color:#0e2a1a; padding:0.5rem 1rem; border-radius:8px; font-weight:700; text-decoration:none;">Sign Up</a>
-    `;
-  }
+    // Instant UI from cache
+    const cachedUsername = localStorage.getItem("username");
+
+    if (!user && cachedUsername) {
+
+        document.getElementById("nav-username").textContent = cachedUsername;
+        document.getElementById("user-avatar").textContent =
+            cachedUsername.charAt(0).toUpperCase();
+
+        loggedOut.style.display = "none";
+        loggedIn.style.display = "flex";
+        return;
+    }
+
+    if (user) {
+
+        const email = user.email || "User";
+        const username = email.split("@")[0];
+
+        // Save for next page load
+        localStorage.setItem("username", username);
+
+        document.getElementById("nav-username").textContent = username;
+        document.getElementById("user-email").textContent = email;
+        document.getElementById("user-avatar").textContent =
+            username.charAt(0).toUpperCase();
+
+        loggedOut.style.display = "none";
+        loggedIn.style.display = "flex";
+
+    } else {
+
+        localStorage.removeItem("username");
+
+        loggedOut.style.display = "flex";
+        loggedIn.style.display = "none";
+
+    }
+
+    document.getElementById("user-nav-status").style.visibility = "visible";
+
 }
 
 // ── AUTHENTICATION FUNCTIONS ──
@@ -94,14 +128,29 @@ function handleSignup(event) {
   const email = document.getElementById('signup-email').value;
   const password = document.getElementById('signup-password').value;
 
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      alert("Account created successfully!");
-      window.location.href = "detect.html";
-    })
-    .catch((error) => {
-      alert("Signup Error: " + error.message);
+ const fullName = document.getElementById("signup-name").value;
+
+auth.createUserWithEmailAndPassword(email, password)
+.then(async (userCredential) => {
+
+    const user = userCredential.user;
+
+    await user.updateProfile({
+        displayName: fullName
     });
+
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("username", fullName);
+    localStorage.setItem("email", user.email);
+
+    window.location.href = "detect.html";
+
+})
+.catch((error) => {
+
+    alert(error.message);
+
+});
 }
 
 function handleLogin(event) {
@@ -110,20 +159,32 @@ function handleLogin(event) {
   const password = document.getElementById('login-password').value;
 
   auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
-      alert("Logged in successfully!");
-      window.location.href = "detect.html";
-    })
+  .then((userCredential) => {
+
+  const user = userCredential.user;
+  const username = user.displayName || user.email.split("@")[0];
+
+  localStorage.setItem("isLoggedIn", "true");
+  localStorage.setItem("username", username);
+  localStorage.setItem("email", user.email);
+
+  window.location.href = "detect.html";
+})
     .catch((error) => {
       alert("Login Error: " + error.message);
     });
 }
 
 function handleLogout() {
+
+  localStorage.removeItem("isLoggedIn");
+  localStorage.removeItem("username");
+  localStorage.removeItem("email");
+
   auth.signOut().then(() => {
-    alert("Logged out!");
-    window.location.reload();
+    window.location.href = "index.html";
   });
+
 }
 
 window.handleSignup = handleSignup;
@@ -445,6 +506,39 @@ window.clearAllHistory = clearAllHistory;
 
 // ── DOM INITIALIZATION ──
 document.addEventListener('DOMContentLoaded', () => {
+
+  
+
+
+
+  const loggedOut = document.getElementById("logged-out-view");
+const loggedIn = document.getElementById("logged-in-view");
+const nav = document.getElementById("user-nav-status");
+
+const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+const username = localStorage.getItem("username");
+const email = localStorage.getItem("email");
+
+if (isLoggedIn) {
+
+    document.getElementById("nav-username").textContent = username;
+    document.getElementById("user-email").textContent = email;
+    document.getElementById("user-avatar").textContent =
+        username.charAt(0).toUpperCase();
+
+    loggedOut.style.display = "none";
+    loggedIn.style.display = "flex";
+
+} else {
+
+    loggedOut.style.display = "flex";
+    loggedIn.style.display = "none";
+
+}
+
+nav.style.visibility = "visible";
+
+
   // Ensure cards start in clean state
   hideCard(document.getElementById('loading-card'));
   hideCard(document.getElementById('results-card'));
@@ -487,31 +581,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-// Ye function DOM tayar hone par execution timing delay kiye bina chalega
-document.addEventListener("DOMContentLoaded", function () {
-  // LocalStorage / SessionStorage se login status check karein
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"; 
-  const username = localStorage.getItem("username") || "User";
-
-  const loggedOutView = document.getElementById("logged-out-view");
-  const loggedInView = document.getElementById("logged-in-view");
-  const navUsername = document.getElementById("nav-username");
-
-  if (isLoggedIn) {
-    if (navUsername) navUsername.textContent = username;
-    if (loggedInView) loggedInView.classList.remove("nav-hidden");
-  } else {
-    if (loggedOutView) loggedOutView.classList.remove("nav-hidden");
-  }
-
-  // Logout button event listener
-  const logoutBtn = document.getElementById("logout-btn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", function () {
-      localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("username");
-      window.location.reload(); // Page refresh to update state
-    });
-  }
-});
