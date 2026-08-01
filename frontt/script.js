@@ -171,7 +171,7 @@ function handleLogin(event) {
   localStorage.setItem("username", username);
   localStorage.setItem("email", user.email);
 
-  window.location.reload();
+  window.location.href = "detect.html";
 })
     .catch((error) => {
       alert("Login Error: " + error.message);
