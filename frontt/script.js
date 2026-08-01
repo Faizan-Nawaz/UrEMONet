@@ -147,7 +147,6 @@ auth.createUserWithEmailAndPassword(email, password)
     localStorage.setItem("username", fullName);
     localStorage.setItem("email", user.email);
 
-    window.location.href = "detect.html";
 
 })
 .catch((error) => {
@@ -172,7 +171,7 @@ function handleLogin(event) {
   localStorage.setItem("username", username);
   localStorage.setItem("email", user.email);
 
-  window.location.href = "detect.html";
+  window.location.reload();
 })
     .catch((error) => {
       alert("Login Error: " + error.message);
