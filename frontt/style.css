@@ -104,6 +104,7 @@ nav {
   position: relative;
 }
 
+
 .nav-btn {
   font-size: 0.9rem;
   font-weight: 600;
@@ -232,10 +233,13 @@ nav {
 
 .hero-left p {
   font-size: 1.05rem;
-  color: var(--hero-text-muted);
   line-height: 1.6;
   margin-bottom: 2rem;
   max-width: 480px;
+
+  text-shadow:
+        0 1px 2px rgba(0,0,0,0.25),
+        0 0 8px rgba(0,0,0,0.08);
 }
 
 .hero-btns {
@@ -535,6 +539,8 @@ nav {
   gap: 0;
 }
 
+
+
 .nav-logo {
   order: 1;
   flex: 1;
@@ -621,6 +627,11 @@ nav {
     font-size: 0.9rem !important;
     justify-content: center;
   }
+
+  /* Hide laptop mockup on mobile */
+.hero-right {
+    display: none !important;
+}
 
   /* 4. Laptop Mockup Scaling */
   .hero-right {
@@ -887,17 +898,22 @@ nav {
     border:1px solid #22c55e;
 }
 
-.avatar{
-    width:32px;
-    height:32px;
-    border-radius:50%;
-    background:#22c55e;
-    color:#0e2a1a;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
+.avatar {
+  width: 38px;
+  height: 38px;
+  background-color: #22c55e; /* Green background jo aapke theme se match karta hai */
+  color: #0e2a1a;            /* Dark text color */
+  border-radius: 50%;        /* Is se avatar bilkul Gol (Circle) banega */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  user-select: none;
+  cursor: pointer;
 }
+
 
 .dropdown-menu{
     position:absolute;

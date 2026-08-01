@@ -73,53 +73,57 @@ document.addEventListener('click', (e) => {
 
 // Update Navbar / UI based on Auth state
 function updateUserUI(user) {
-
     const loggedOut = document.getElementById("logged-out-view");
     const loggedIn = document.getElementById("logged-in-view");
 
     if (!loggedOut || !loggedIn) return;
 
-    // Instant UI from cache
     const cachedUsername = localStorage.getItem("username");
-
-    if (!user && cachedUsername) {
-
-        document.getElementById("nav-username").textContent = cachedUsername;
-        document.getElementById("user-avatar").textContent =
-            cachedUsername.charAt(0).toUpperCase();
-
-        loggedOut.style.display = "none";
-        loggedIn.style.display = "flex";
-        return;
-    }
+    const cachedEmail = localStorage.getItem("email");
 
     if (user) {
-
         const email = user.email || "User";
-        const username = email.split("@")[0];
+        const username = user.displayName || localStorage.getItem("username") || email.split("@")[0];
 
-        // Save for next page load
+        // Save for cache
         localStorage.setItem("username", username);
+        localStorage.setItem("email", email);
 
-        document.getElementById("nav-username").textContent = username;
-        document.getElementById("user-email").textContent = email;
-        document.getElementById("user-avatar").textContent =
-            username.charAt(0).toUpperCase();
+        // Avatar mein sirf First Letter
+        document.getElementById("user-avatar").textContent = username.charAt(0).toUpperCase();
+        
+        // Dropdown ke andar Name aur Email show karein
+        const nameElem = document.getElementById("user-display-name");
+        if (nameElem) nameElem.textContent = username;
+        
+        const emailElem = document.getElementById("user-email");
+        if (emailElem) emailElem.textContent = email;
 
         loggedOut.style.display = "none";
         loggedIn.style.display = "flex";
 
-    } else {
+    } else if (cachedUsername) {
+        // Cache fallback
+        document.getElementById("user-avatar").textContent = cachedUsername.charAt(0).toUpperCase();
+        
+        const nameElem = document.getElementById("user-display-name");
+        if (nameElem) nameElem.textContent = cachedUsername;
+        
+        const emailElem = document.getElementById("user-email");
+        if (emailElem) emailElem.textContent = cachedEmail || "";
 
+        loggedOut.style.display = "none";
+        loggedIn.style.display = "flex";
+    } else {
         localStorage.removeItem("username");
+        localStorage.removeItem("email");
 
         loggedOut.style.display = "flex";
         loggedIn.style.display = "none";
-
     }
 
-    document.getElementById("user-nav-status").style.visibility = "visible";
-
+    const nav = document.getElementById("user-nav-status");
+    if (nav) nav.style.visibility = "visible";
 }
 
 // ── AUTHENTICATION FUNCTIONS ──
