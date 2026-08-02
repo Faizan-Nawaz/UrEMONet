@@ -595,6 +595,7 @@ nav {
   /* 2. Hero Section Mobile Fixes */
   .hero-container {
     padding: 2.5rem 1.2rem 3rem 1.2rem !important;
+    padding-top: 80px;
     
   }
 
@@ -989,3 +990,9 @@ nav {
 .dropdown-menu button:hover {
     background: rgba(255,255,255,.08);
 }
+
+.fade-in { animation: fadeIn 0.4s ease both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.10s; }
+.stagger-3 { animation-delay: 0.15s; }
