@@ -524,7 +524,11 @@ const email = localStorage.getItem("email");
 
 if (isLoggedIn) {
 
-    document.getElementById("nav-username").textContent = username;
+    document.getElementById("user-avatar").textContent =
+    username.charAt(0).toUpperCase();
+
+document.getElementById("dropdown-avatar").textContent =
+    username.charAt(0).toUpperCase();
     document.getElementById("user-email").textContent = email;
     document.getElementById("user-avatar").textContent =
         username.charAt(0).toUpperCase();

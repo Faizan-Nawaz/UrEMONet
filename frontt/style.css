@@ -896,6 +896,7 @@ nav {
     padding:.45rem .8rem;
     border-radius:999px;
     border:1px solid #22c55e;
+    padding: 6px;
 }
 
 .avatar {
@@ -919,10 +920,10 @@ nav {
     position:absolute;
     right:0;
     top:120%;
-    width:170px;
+    width:270px;
     background:#12281c;
     border-radius:12px;
-    padding:.6rem;
+    padding:.9rem;
     border:1px solid rgba(255,255,255,.08);
 }
 
@@ -930,4 +931,50 @@ nav {
     margin-bottom:.5rem;
     border-bottom:1px solid rgba(255,255,255,.08);
     padding-bottom:.5rem;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+
+}
+
+.dropdown-user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.dropdown-name {
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.dropdown-email {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#dropdown-avatar {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+}
+
+.dropdown-menu button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 14px;
+    border: none;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.dropdown-menu button:hover {
+    background: rgba(255,255,255,.08);
 }
