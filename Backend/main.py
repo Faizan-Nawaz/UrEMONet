@@ -45,7 +45,7 @@ warnings.filterwarnings("ignore")
 # Apne checkpoint file paths ke mutabiq adjust karein
 MODEL_PATHS = {
     "fusion": "models/best_model_last.pth",
-    "xlmr": "xlmr",
+    "xlmr": "faizi890/uremonet-xlmr",
     "video_trf": "models/video_transformer_best.pt"
 }
 
@@ -69,8 +69,8 @@ async def lifespan(app: FastAPI):
     MODELS["w2v_model"] = Wav2Vec2Model.from_pretrained(w2v_name).to(device).eval()
 
     # 2. Transcription: Whisper
-    print("  -> Loading Whisper (small)...")
-    MODELS["whisper"] = whisper.load_model("small", device=str(device))
+    print("  -> Loading Whisper (base)...")
+    MODELS["whisper"] = whisper.load_model("base", device=str(device))
 
     # 3. Text Model: XLM-RoBERTa
     print(f"  -> Loading fine-tuned XLM-RoBERTa from {MODEL_PATHS['xlmr']}...")
