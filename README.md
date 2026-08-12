@@ -6,10 +6,23 @@ UrEMONet/
 │   ├── detct.html
 │   ├── history.html
 │   ├── about.html
+|   ├── Login.html
+|   ├── signup.html
 │   ├── script.js
-│   ├── style.css
+│   └── style.css
 │
-├── backend/               
+│
+├── Backend/               
+│   ├── modals/
+|   |   ├── best_modal_last.pth
+|   |   └── video_tranformer_best.pt
+|   |
+│   ├── Main.py
+│   ├── inference.py
+│   └── requirements.txt
+│
+│
+├── training/               
 │   ├── video to audio extraction.ipynb
 │   ├── audio to transcriptions.ipynb
 │   ├── Feature extraction with xlmr and xgboost on transcriptions.ipynb
@@ -19,4 +32,5 @@ UrEMONet/
 │   ├── video_audio_fusion.ipynb
 │   ├── video_text.ipynb
 │   └── video_audio_text_fusion.ipynb
+|
 └── README.md```
