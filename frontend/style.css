@@ -141,6 +141,83 @@ nav {
   display: none !important;
 }
 
+
+
+
+/* ---- Plan badge in dropdown header ---- */
+.plan-pill{
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+}
+
+/* ---- Links section (Profile / History / Upgrade / Settings) ---- */
+.dropdown-items{
+  padding: 6px;
+}
+
+.dropdown-item{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: #d6d6d6;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.dropdown-item svg{
+  flex-shrink: 0;
+  color: #9a9a9a;
+  transition: color 0.15s ease;
+}
+
+.dropdown-item:hover{
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.dropdown-item:hover svg{
+  color: #ffffff;
+}
+
+/* ---- Upgrade to Pro — visually distinct ---- */
+.dropdown-item-upgrade{
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.dropdown-item-upgrade svg{
+  color: #22c55e;
+}
+
+.dropdown-item-upgrade:hover{
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.dropdown-item-upgrade:hover svg{
+  color: #22c55e;
+}
+
+/* ---- Divider before Sign Out ---- */
+.dropdown-divider{
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 6px 10px;
+}
+
+
+
+
 /* Flex layout active states ke liye */
 .auth-group {
   display: flex;

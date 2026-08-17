@@ -65,10 +65,40 @@
     <div class="dropdown-user-info">
         <div id="user-display-name" class="dropdown-name"></div>
         <div id="user-email" class="dropdown-email"></div>
+        <div id="user-plan-badge" class="plan-pill">FREE PLAN</div>
     </div>
 </div>
 
-            <button onclick="handleLogout()">
+<div class="dropdown-items">
+    <a href="profile.html" class="dropdown-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span>My Profile</span>
+    </a>
+
+    <a href="history.html" class="dropdown-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>Detection History</span>
+    </a>
+
+    <a href="subscription.html" class="dropdown-item dropdown-item-upgrade">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15 9 22 9 16.5 13.5 18.5 21 12 17 5.5 21 7.5 13.5 2 9 9 9 12 2"/>
+        </svg>
+        <span>Upgrade to Pro</span>
+    </a>
+
+    
+</div>
+
+<div class="dropdown-divider"></div>
+
+<button onclick="handleLogout()">
     <svg xmlns="http://www.w3.org/2000/svg"
          width="18"
          height="18"

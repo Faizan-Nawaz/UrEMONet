@@ -57,10 +57,40 @@
     <div class="dropdown-user-info">
         <div id="user-display-name" class="dropdown-name"></div>
         <div id="user-email" class="dropdown-email"></div>
+        <div id="user-plan-badge" class="plan-pill">FREE PLAN</div>
     </div>
 </div>
 
-            <button onclick="handleLogout()">
+<div class="dropdown-items">
+    <a href="profile.html" class="dropdown-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span>My Profile</span>
+    </a>
+
+    <a href="history.html" class="dropdown-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>Detection History</span>
+    </a>
+
+    <a href="subscription.html" class="dropdown-item dropdown-item-upgrade">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15 9 22 9 16.5 13.5 18.5 21 12 17 5.5 21 7.5 13.5 2 9 9 9 12 2"/>
+        </svg>
+        <span>Upgrade to Pro</span>
+    </a>
+
+    
+</div>
+
+<div class="dropdown-divider"></div>
+
+<button onclick="handleLogout()">
     <svg xmlns="http://www.w3.org/2000/svg"
          width="18"
          height="18"
@@ -132,27 +162,24 @@
     </div>
 
     <!-- Loading Card -->
-    <div class="loading-card" id="loading-card" style="display: none; text-align: center; background-color: var(--dark-card, #12281c); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem;">
-      <p style="font-size:1.1rem; font-weight:600; color:#f2f5ee; margin-bottom:1.5rem">Analyzing your video...</p>
-      <div class="loading-steps" style="display: flex; flex-direction: column; gap: 0.8rem; text-align: left;">
-        <div class="loading-step" id="step-video" style="color: #9bb8a9; display: flex; align-items: center; gap: 0.8rem;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
-          Extracting video frames
-        </div>
-        <div class="loading-step" id="step-audio" style="color: #9bb8a9; display: flex; align-items: center; gap: 0.8rem;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg>
-          Processing audio with Wav2Vec2
-        </div>
-        <div class="loading-step" id="step-text" style="color: #9bb8a9; display: flex; align-items: center; gap: 0.8rem;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
-          Transcribing with Whisper + XLM-R
-        </div>
-        <div class="loading-step" id="step-fusion" style="color: #9bb8a9; display: flex; align-items: center; gap: 0.8rem;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Running fusion model
-        </div>
-      </div>
-    </div>
+    <div class="loading-card" id="loading-card" style="display: none; text-align: center; background-color: var(--dark-card, #12281c); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2.5rem 2rem;">
+  
+  <div class="loading-spinner" style="width: 52px; height: 52px; margin: 0 auto 1.5rem; border-radius: 50%; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent-green, #22c55e); animation: spin 0.9s linear infinite;"></div>
+
+  <p style="font-size:1.1rem; font-weight:600; color:#f2f5ee; margin-bottom:0.5rem">Hang on, analyzing your video...</p>
+  <p style="font-size:0.85rem; color:#9bb8a9;">This usually takes a few seconds</p>
+
+  <div style="width: 200px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 999px; margin: 1.5rem auto 0; overflow: hidden;">
+    <div id="loading-progress-fill" style="width: 0%; height: 100%; background: var(--accent-green, #22c55e); border-radius: 999px; transition: width 0.4s ease;"></div>
+  </div>
+
+</div>
+
+<style>
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
 
     <!-- Results Card -->
     <div class="results-card" id="results-card" style="display: none; background-color: var(--dark-card, #12281c); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem;">

@@ -16,6 +16,7 @@ import numpy as np
 import librosa
 import cv2
 import whisper
+import joblib
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -69,8 +70,8 @@ async def lifespan(app: FastAPI):
     MODELS["w2v_model"] = Wav2Vec2Model.from_pretrained(w2v_name).to(device).eval()
 
     # 2. Transcription: Whisper
-    print("  -> Loading Whisper (base)...")
-    MODELS["whisper"] = whisper.load_model("base", device=str(device))
+    print("  -> Loading Whisper (small)...")
+    MODELS["whisper"] = whisper.load_model("small", device=str(device))
 
     # 3. Text Model: XLM-RoBERTa
     print(f"  -> Loading fine-tuned XLM-RoBERTa from {MODEL_PATHS['xlmr']}...")
@@ -92,6 +93,18 @@ async def lifespan(app: FastAPI):
     print(f"  Video Transformer missing keys: {missing}")
     print(f"  Video Transformer unexpected keys: {unexpected}")
     MODELS["video_trf"] = vid_trf.to(device).eval()
+
+
+
+    MODELS["scaler_audio"] = joblib.load("models/scaler_audio.pkl")
+    MODELS["scaler_video"] = joblib.load("models/scaler_video.pkl")
+    MODELS["scaler_text"] = joblib.load("models/scaler_text.pkl")
+
+    print("===== SCALER CHECK =====")
+    print("Audio scaler:", MODELS["scaler_audio"].mean_.shape)
+    print("Video scaler:", MODELS["scaler_video"].mean_.shape)
+    print("Text scaler:", MODELS["scaler_text"].mean_.shape)
+
 
     # 6. Fusion Model
     print(f"  -> Loading RobustVATTEmotionPredictor from {MODEL_PATHS['fusion']}...")
@@ -215,17 +228,107 @@ def process_pipeline(video_path: str):
         sequence = seq.unsqueeze(0).to(device).float()  # (1, 15, 512)
         mask = (sequence.sum(dim=-1) == 0).to(device)
 
+
+
+
         # Video Transformer & Final Fusion Forward Pass
         with torch.no_grad():
             video_feat = MODELS["video_trf"](sequence, mask=mask, extract_embeddings=True)  # (1, 256)
+        print("\n===== RAW FEATURES =====")
+        print(
+            "Audio:",
+            audio_feat.min().item(),
+            audio_feat.max().item(),
+            audio_feat.mean().item()
+        )
+        
+        print(
+            "Video:",
+            video_feat.min().item(),
+            video_feat.max().item(),
+            video_feat.mean().item()
+        )
+        
+        print(
+            "Text:",
+            text_feat.min().item(),
+            text_feat.max().item(),
+            text_feat.mean().item()
+        )
+        
+
+        audio_feat = torch.tensor(
+            MODELS["scaler_audio"].transform(
+                audio_feat.cpu().numpy()
+            ),
+            device=device
+        ).float()
+
+        video_feat = torch.tensor(
+            MODELS["scaler_video"].transform(
+                video_feat.cpu().numpy()
+            ),
+            device=device
+        ).float()
+
+        text_feat = torch.tensor(
+            MODELS["scaler_text"].transform(
+                text_feat.cpu().numpy()
+            ),
+            device=device
+        ).float()
+
+
+        print("\n===== SCALED FEATURES =====")
+        print(
+            "Audio:",
+            audio_feat.min().item(),
+            audio_feat.max().item(),
+            audio_feat.mean().item()
+        )
+
+        print(
+            "Video:",
+            video_feat.min().item(),
+            video_feat.max().item(),
+            video_feat.mean().item()
+        )
+
+        print(
+            "Text:",
+            text_feat.min().item(),
+            text_feat.max().item(),
+            text_feat.mean().item()
+        )
+
+
+
+       
+        with torch.no_grad():
             logits = MODELS["fusion"](audio_feat, video_feat, text_feat)  # (1, 5)
             probs = F.softmax(logits, dim=-1).squeeze(0).cpu().numpy()
 
+
+        # ===== DEBUG: CHECK MODEL OUTPUT =====
+        print("\n===== LOGITS =====")
+        print(logits.detach().cpu().numpy())
+
+        print("\n===== PROBABILITIES =====")
+        print(probs)
+
+        
         predicted_idx = int(np.argmax(probs))
         predicted_emotion = LABEL_MAP.get(predicted_idx, "Unknown")
         prob_dict = {LABEL_MAP[i]: float(probs[i]) for i in range(len(probs))}
 
         return predicted_emotion, transcription, prob_dict
+        print("\n===== LOGITS =====")
+        print(logits.detach().cpu().numpy())
+
+        print("\n===== PROBABILITIES =====")
+        print(probs)
+
+        print("Predicted:", predicted_emotion)
 
     finally:
         # Temp Audio File Cleanup

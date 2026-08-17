@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>UrEMONet — Subscription</title>
+<style>
+  :root{
+    --dark: #0e2318;
+    --dark-2: #14301f;
+    --cream: #f3efe4;
+    --cream-2: #e9e3d3;
+    --white: #ffffff;
+    --green: #22c55e;
+    --green-deep: #14532d;
+    --text-dark: #1c231d;
+    --text-muted: #5c655d;
+    --border: rgba(0,0,0,0.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family: -apple-system, "Inter", "Segoe UI", sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+  }
+
+  main{ max-width: 1100px; margin:0 auto; padding: 0 24px 110px; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background: var(--dark);
+    border-radius: 0 0 28px 28px;
+    padding: 32px 24px 90px;
+    text-align:center;
+    color: var(--cream);
+    margin: 0 -24px 0;
+    position: relative;
+    overflow:hidden;
+  }
+  .hero:before{
+    content:"";
+    position:absolute; left:50%; top:-100px;
+    transform:translateX(-50%);
+    width:500px;height:300px;
+    background: radial-gradient(circle, rgba(34,197,94,0.16), transparent 70%);
+  }
+
+  /* ---------- BACK BUTTON ---------- */
+  .back-btn-wrap{
+    text-align: left;
+    max-width: 1100px;
+    margin: 0 auto 20px auto;
+    position: relative;
+    z-index: 10;
+  }
+  .back-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--cream);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 7px 14px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+  .back-btn:hover{
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+  }
+
+  .hero-eyebrow{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12px; font-weight:700; letter-spacing:.03em;
+    background: rgba(255,255,255,0.08);
+    padding: 5px 14px; border-radius:999px;
+    margin-bottom: 18px;
+    position:relative; z-index:1;
+    color: var(--green);
+  }
+  .hero h1{
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 34px;
+    margin-bottom: 10px;
+    position:relative; z-index:1;
+  }
+  .hero p{
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    max-width: 440px;
+    margin: 0 auto;
+    position:relative; z-index:1;
+  }
+
+  /* ---------- TOGGLE ---------- */
+  .toggle-wrap{
+    display:flex; justify-content:center;
+    margin-top: -26px;
+    position:relative; z-index: 2;
+  }
+  .toggle{
+    display:inline-flex;
+    background: var(--white);
+    padding: 5px;
+    border-radius: 999px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    font-size: 13px;
+  }
+  .toggle span{
+    padding: 9px 20px;
+    border-radius: 999px;
+    cursor:pointer;
+    color: var(--text-muted);
+    font-weight:600;
+  }
+  .toggle span.active{ background: var(--dark); color:#fff; }
+  .save-tag{
+    font-size:10px; background: rgba(34,197,94,0.15); color:var(--green-deep);
+    padding: 2px 7px; border-radius:999px; margin-left:6px; font-weight:700;
+  }
+
+  /* ---------- PLANS ---------- */
+  .plans{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-top: 56px;
+  }
+  .plan-card{
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 32px 28px;
+    position: relative;
+    display:flex; flex-direction:column;
+  }
+  .plan-card.pro{
+    background: var(--dark);
+    color: var(--cream);
+    border: none;
+    transform: scale(1.03);
+    box-shadow: 0 24px 50px rgba(14,35,24,0.28);
+  }
+  .plan-badge{
+    position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+    background: var(--green);
+    color:#08240f;
+    font-size:10.5px; font-weight:800; letter-spacing:.02em;
+    padding: 5px 14px; border-radius:999px;
+    white-space:nowrap;
+  }
+  .plan-name{ font-size:14px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.03em; }
+  .plan-card.pro .plan-name{ color: rgba(255,255,255,0.55); }
+  .plan-price{ font-size: 38px; font-weight:800; margin: 14px 0 2px; }
+  .plan-price span{ font-size:13px; font-weight:500; color:var(--text-muted); }
+  .plan-card.pro .plan-price{ color:#fff; }
+  .plan-card.pro .plan-price span{ color: rgba(255,255,255,0.5); }
+  .plan-desc{ font-size:12.5px; color:var(--text-muted); margin-bottom:22px; }
+  .plan-card.pro .plan-desc{ color: rgba(255,255,255,0.55); }
+
+  .plan-features{ list-style:none; font-size:13px; margin-bottom: 26px; flex:1; }
+  .plan-features li{ padding: 8px 0; display:flex; gap:9px; color: var(--text-muted); border-top:1px solid var(--border); }
+  .plan-features li:first-child{ border-top:none; }
+  .plan-features li:before{ content:"✓"; color: var(--green-deep); font-weight:700; }
+  .plan-card.pro .plan-features li{ color: rgba(255,255,255,0.75); border-top:1px solid rgba(255,255,255,0.08); }
+  .plan-card.pro .plan-features li:before{ color: var(--green); }
+
+  .plan-btn{
+    display:block; width:100%; text-align:center;
+    padding: 12px; border-radius: 11px;
+    font-size:13.5px; font-weight:700;
+    border: 1px solid var(--border);
+    cursor:pointer;
+    background: var(--cream);
+    color: var(--text-dark);
+  }
+  .plan-card.pro .plan-btn{
+    background: var(--green); color:#08240f; border:none;
+  }
+  .plan-btn.current{
+    background: transparent;
+    color: var(--text-muted);
+    cursor:default;
+  }
+
+  .mock-note{
+    text-align:center;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 30px;
+  }
+
+  /* ---------- COMPARE TABLE ---------- */
+  .compare{
+    margin-top: 70px;
+  }
+  .compare h2{
+    font-family: Georgia, serif;
+    font-size: 22px;
+    text-align:center;
+    margin-bottom: 28px;
+  }
+  table{
+    width:100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 16px;
+    overflow:hidden;
+    border: 1px solid var(--border);
+  }
+  th, td{
+    padding: 14px 20px;
+    text-align:left;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+  }
+  th{
+    background: var(--cream-2);
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: var(--text-muted);
+  }
+  td:not(:first-child), th:not(:first-child){ text-align:center; }
+  tr:last-child td{ border-bottom:none; }
+  .check{ color: var(--green-deep); font-weight:700; }
+  .dash{ color: var(--text-muted); }
+
+  /* ---------- FAQ ---------- */
+  .faq{ margin-top: 64px; }
+  .faq h2{
+    font-family: Georgia, serif;
+    font-size: 22px;
+    text-align:center;
+    margin-bottom: 28px;
+  }
+  .faq-item{
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+  }
+  .faq-q{ font-size:13.5px; font-weight:700; margin-bottom:6px; }
+  .faq-a{ font-size:12.5px; color:var(--text-muted); line-height:1.5; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <!-- Back Button -->
+  <div class="back-btn-wrap">
+    <button class="back-btn" onclick="history.back()">
+      ← Back
+    </button>
+  </div>
+
+  <div class="hero-eyebrow">● Subscription</div>
+  <h1>Choose your plan</h1>
+  <p>Unlock unlimited detections and priority processing for your videos</p>
+</div>
+
+<main>
+
+  <div class="toggle-wrap">
+    <div class="toggle">
+      <span class="active">Monthly</span>
+      <span>Yearly <span class="save-tag">Save 20%</span></span>
+    </div>
+  </div>
+
+  <div class="plans">
+    <div class="plan-card">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">$0<span>/month</span></div>
+      <div class="plan-desc">Try out emotion detection with basic limits</div>
+      <ul class="plan-features">
+        <li>10 detections / month</li>
+        <li>Standard processing speed</li>
+        <li>7-day history</li>
+        <li>Single video upload</li>
+      </ul>
+      <div class="plan-btn current">Current Plan</div>
+    </div>
+
+    <div class="plan-card pro">
+      <div class="plan-badge">MOST POPULAR</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">$6<span>/month</span></div>
+      <div class="plan-desc">For regular use with full access</div>
+      <ul class="plan-features">
+        <li>Unlimited detections</li>
+        <li>Priority processing speed</li>
+        <li>Full history + export</li>
+        <li>Batch video upload</li>
+        <li>Per-modality confidence breakdown</li>
+      </ul>
+      <div class="plan-btn">Upgrade to Pro</div>
+    </div>
+
+    <div class="plan-card">
+      <div class="plan-name">Team</div>
+      <div class="plan-price">$18<span>/month</span></div>
+      <div class="plan-desc">For research groups and classrooms</div>
+      <ul class="plan-features">
+        <li>Everything in Pro</li>
+        <li>Up to 5 team members</li>
+        <li>Shared history dashboard</li>
+        <li>API access</li>
+      </ul>
+      <div class="plan-btn">Contact Us</div>
+    </div>
+  </div>
+
+  <div class="mock-note">⚠ Pricing shown for demonstration only — no payment gateway is connected yet</div>
+
+  <!-- Compare table -->
+  <div class="compare">
+    <h2>Compare plans</h2>
+    <table>
+      <tr>
+        <th>Feature</th>
+        <th>Free</th>
+        <th>Pro</th>
+        <th>Team</th>
+      </tr>
+      <tr>
+        <td>Monthly detections</td>
+        <td>10</td>
+        <td class="check">Unlimited</td>
+        <td class="check">Unlimited</td>
+      </tr>
+      <tr>
+        <td>Processing speed</td>
+        <td>Standard</td>
+        <td class="check">Priority</td>
+        <td class="check">Priority</td>
+      </tr>
+      <tr>
+        <td>History retention</td>
+        <td>7 days</td>
+        <td class="check">Full</td>
+        <td class="check">Full</td>
+      </tr>
+      <tr>
+        <td>Batch upload</td>
+        <td class="dash">—</td>
+        <td class="check">✓</td>
+        <td class="check">✓</td>
+      </tr>
+      <tr>
+        <td>Team members</td>
+        <td class="dash">—</td>
+        <td class="dash">—</td>
+        <td class="check">Up to 5</td>
+      </tr>
+      <tr>
+        <td>API access</td>
+        <td class="dash">—</td>
+        <td class="dash">—</td>
+        <td class="check">✓</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq">
+    <h2>Frequently asked</h2>
+    <div class="faq-item">
+      <div class="faq-q">Can I cancel anytime?</div>
+      <div class="faq-a">Yes, you can downgrade back to Free at any time and keep access until the end of your billing period.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What happens to my history if I downgrade?</div>
+      <div class="faq-a">Your history is kept, but older entries beyond the 7-day Free window won't be visible until you upgrade again.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is payment available yet?</div>
+      <div class="faq-a">Not yet — this page shows the planned pricing structure. Billing integration is a future step.</div>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

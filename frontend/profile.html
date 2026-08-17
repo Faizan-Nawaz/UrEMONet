@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>UrEMONet — Profile</title>
+<style>
+  :root{
+    --dark: #0e2318;
+    --dark-2: #14301f;
+    --cream: #f3efe4;
+    --cream-2: #e9e3d3;
+    --white: #ffffff;
+    --green: #22c55e;
+    --green-deep: #14532d;
+    --text-dark: #1c231d;
+    --text-muted: #5c655d;
+    --border: rgba(0,0,0,0.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family: -apple-system, "Inter", "Segoe UI", sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+  }
+
+  /* ---------- PAGE LAYOUT ---------- */
+  main{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px 24px 100px;
+  }
+
+  /* ---------- BACK BUTTON ---------- */
+  .back-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 20px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+  .back-btn:hover{
+    background: var(--cream-2);
+    color: var(--text-dark);
+  }
+
+  /* ---------- PROFILE HEADER ---------- */
+  .profile-banner{
+    background: var(--dark);
+    border-radius: 20px;
+    padding: 40px;
+    display:flex;
+    align-items:center;
+    gap: 26px;
+    color: var(--cream);
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .profile-banner:before{
+    content:"";
+    position:absolute;
+    right:-60px; top:-60px;
+    width:220px;height:220px;
+    background: radial-gradient(circle, rgba(34,197,94,0.18), transparent 70%);
+  }
+  .profile-avatar{
+    width:84px;height:84px;border-radius:50%;
+    background: linear-gradient(135deg, var(--green), var(--green-deep));
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:700;font-size:28px;
+    border: 3px solid rgba(255,255,255,0.15);
+    flex-shrink:0;
+    z-index:1;
+  }
+  .profile-banner-info{ z-index:1; }
+  .profile-name{ font-size: 22px; font-weight:700; margin-bottom:4px; }
+  .profile-email{ font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
+  .plan-pill{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size: 10.5px; font-weight:700; letter-spacing:.03em;
+    padding: 4px 10px; border-radius:999px;
+    background: rgba(34,197,94,0.15);
+    color: var(--green);
+  }
+
+  /* ---------- STATS ROW ---------- */
+  .stats-row{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+  .stat-card{
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+  }
+  .stat-label{ font-size:12px; color:var(--text-muted); margin-bottom:8px; }
+  .stat-value{ font-size:24px; font-weight:700; }
+  .stat-value.emotion{ display:flex; align-items:center; gap:8px; }
+  .emo-dot{ width:10px;height:10px;border-radius:50%; background: var(--green); }
+
+  /* ---------- TWO COLUMN LAYOUT ---------- */
+  .grid-2{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+  }
+
+  .card{
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .card-title{
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .card-sub{
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-bottom: 22px;
+  }
+
+  /* Account details form */
+  .field-row{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .field label{
+    font-size: 11.5px;
+    font-weight:600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .02em;
+  }
+  .field input{
+    padding: 10px 12px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    background: var(--cream);
+    font-size: 13.5px;
+    color: var(--text-dark);
+  }
+  .field input:disabled{ color: var(--text-muted); }
+  .save-btn{
+    background: var(--dark);
+    color: var(--cream);
+    border:none;
+    padding: 11px 22px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor:pointer;
+    margin-top: 6px;
+  }
+
+  /* Danger zone */
+  .danger-card{
+    border: 1px solid rgba(176,65,62,0.25);
+  }
+  .danger-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding: 10px 0;
+  }
+  .danger-row + .danger-row{ border-top: 1px solid var(--border); }
+  .danger-row .label{ font-size:13.5px; font-weight:600; }
+  .danger-row .desc{ font-size:11.5px; color:var(--text-muted); margin-top:2px; }
+  .danger-btn{
+    background: #fff;
+    border: 1px solid rgba(176,65,62,0.4);
+    color: #b0413e;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor:pointer;
+  }
+
+  /* Sidebar: subscription card */
+  .sub-card{
+    background: var(--dark);
+    color: var(--cream);
+  }
+  .sub-card .card-title{ color:#fff; }
+  .sub-card .card-sub{ color: rgba(255,255,255,0.5); }
+  .sub-plan-name{ font-size:20px; font-weight:700; margin-bottom:2px; }
+  .sub-plan-detail{ font-size:12px; color: rgba(255,255,255,0.55); margin-bottom:18px; }
+  .sub-features{ list-style:none; font-size:12.5px; margin-bottom:20px; }
+  .sub-features li{ padding:5px 0; display:flex; gap:8px; color: rgba(255,255,255,0.75); }
+  .sub-features li:before{ content:"✓"; color: var(--green); font-weight:700; }
+  .upgrade-btn{
+    display:block; width:100%; text-align:center;
+    background: var(--green); color:#08240f;
+    padding: 11px; border-radius:10px;
+    font-size:13px; font-weight:700; border:none; cursor:pointer;
+  }
+  .mock-note{
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.35);
+    text-align:center;
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  /* Sidebar: recent activity */
+  .activity-item{
+    display:flex; align-items:center; gap:10px;
+    padding: 9px 0;
+    font-size: 12.5px;
+  }
+  .activity-item + .activity-item{ border-top: 1px solid var(--border); }
+  .activity-emo{
+    width:8px;height:8px;border-radius:50%;
+    background: var(--green);
+    flex-shrink:0;
+  }
+  .activity-item .txt{ flex:1; }
+  .activity-item .time{ color: var(--text-muted); font-size:11px; }
+  .view-all{
+    display:block; text-align:center;
+    font-size:12.5px; font-weight:600;
+    color: var(--green-deep);
+    margin-top: 14px;
+    text-decoration:none;
+  }
+</style>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<!-- Your shared script -->
+<script src="script.js"></script>
+
+</head>
+<body>
+
+<main>
+
+  <!-- Back button -->
+  <button class="back-btn" onclick="history.back()">
+    ← Back
+  </button>
+
+  <!-- Profile banner -->
+  <div class="profile-banner">
+    <div class="profile-avatar" id="profile-avatar-large">U</div>
+    <div class="profile-banner-info">
+      
+      <div class="profile-name" id="profile-display-name">Loading...</div>
+      <div class="profile-email" id="profile-email">Loading...</div>
+      <div class="plan-pill" id="profile-plan-pill">● FREE PLAN</div>
+    </div>
+    
+</div>
+
+  <!-- Stats Row -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-label">Total Detections</div>
+    <div class="stat-value" id="stat-total-detections">0</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Most Common Emotion</div>
+    <div class="stat-value emotion" id="stat-common-emotion">
+      <span class="emo-dot"></span><span id="stat-emotion-text">--</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Member Since</div>
+    <div class="stat-value" id="stat-member-since">--</div>
+  </div>
+</div>
+
+  <div class="grid-2">
+    <!-- Left column -->
+    <div>
+      <form class="card" id="account-details-form" onsubmit="handleAccountSave(event)">
+  <div class="card-title">Account Details</div>
+  <div class="card-sub">Update your personal information</div>
+
+  <div class="field-row">
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" id="account-full-name" placeholder="Enter full name" required>
+    </div>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="account-email" disabled>
+    </div>
+  </div>
+
+  <div class="field-row">
+    <div class="field">
+      <label>New Password</label>
+      <input type="password" id="account-new-password" placeholder="••••••••">
+    </div>
+    <div class="field">
+      <label>Confirm Password</label>
+      <input type="password" id="account-confirm-password" placeholder="••••••••">
+    </div>
+  </div>
+
+  <button type="submit" class="save-btn" id="save-account-btn">Save Changes</button>
+</form>
+
+      <div class="card danger-card">
+  <div class="card-title">Account</div>
+  <div class="card-sub">Manage your session and data</div>
+
+  <!-- Sign Out Row -->
+  <div class="danger-row">
+    <div>
+      <div class="label">Sign out of all devices</div>
+      <div class="desc">End every active session for this account</div>
+    </div>
+    <button class="danger-btn" id="sign-out-all-btn" onclick="handleSignOutAll()">Sign Out All</button>
+  </div>
+
+  <!-- Delete Account Row -->
+  <div class="danger-row">
+    <div>
+      <div class="label">Delete account</div>
+      <div class="desc">Permanently remove your account and history</div>
+    </div>
+    <button class="danger-btn" id="delete-account-btn" onclick="handleDeleteAccount()">Delete</button>
+  </div>
+</div>
+    </div>
+
+    <!-- Right column -->
+    <div>
+      <div class="card sub-card">
+        <div class="card-title">Subscription</div>
+        <div class="card-sub">Your current plan</div>
+        <div class="sub-plan-name">Free</div>
+        <div class="sub-plan-detail">10 detections / month</div>
+        <ul class="sub-features">
+          <li>Standard processing speed</li>
+          <li>7-day history</li>
+        </ul>
+        <button class="upgrade-btn">Upgrade to Pro — $6/mo</button>
+        <div class="mock-note">⚠ mock only — no payment gateway connected</div>
+      </div>
+
+      <div class="card">
+  <div class="card-title">Recent Activity</div>
+  <div class="card-sub">Your last few detections</div>
+
+  <!-- Dynamic Container -->
+  <div id="recent-activity-list">
+    <div style="color: #9bb8a9; padding: 0.5rem 0; font-size: 0.9rem;">Loading recent activity...</div>
+  </div>
+
+  <a href="history.html" class="view-all">View Full History →</a>
+</div>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>
