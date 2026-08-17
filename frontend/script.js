@@ -19,14 +19,10 @@ const db = firebase.firestore();
 let currentUser = null;
 
 auth.onAuthStateChanged((user) => {
-
   currentUser = user;
 
-
   if (user) {
-
     fetchRecentActivityFromFirestore(user);
-
     populateAccountForm(user);
     loadMemberSince(user);
     loadUserStatsFromFirestore(user);
@@ -36,28 +32,24 @@ auth.onAuthStateChanged((user) => {
     localStorage.setItem("isLoggedIn", "true");
     localStorage.setItem("username", username);
     localStorage.setItem("email", user.email);
-
   } else {
-
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("username");
     localStorage.removeItem("email");
-
   }
 
   updateUserUI(user);
 
   // Current page detection
-  const currentPath = window.location.pathname.split("/").pop() || "index.html";
+  const pathName = window.location.pathname.split("/").pop() || "index.html";
 
-  if (currentPath === "history.html" || document.getElementById("history-list")) {
+  if (pathName === "history.html" || document.getElementById("history-list")) {
     if (user) {
       fetchHistoryFromFirestore();
     } else {
       renderGuestHistoryNotice();
     }
   }
-
 });
 
 // Dropdown Toggle Functionality
@@ -80,82 +72,77 @@ document.addEventListener('click', (e) => {
 
 // Update Navbar / UI based on Auth state
 function updateUserUI(user) {
-    const loggedOut = document.getElementById("logged-out-view");
-    const loggedIn = document.getElementById("logged-in-view");
+  const loggedOut = document.getElementById("logged-out-view");
+  const loggedIn = document.getElementById("logged-in-view");
 
-    const cachedUsername = localStorage.getItem("username");
-    const cachedEmail = localStorage.getItem("email");
+  const cachedUsername = localStorage.getItem("username");
+  const cachedEmail = localStorage.getItem("email");
 
-    if (user) {
-        const email = user.email || "User";
-        const username = user.displayName || localStorage.getItem("username") || email.split("@")[0];
+  if (user) {
+    const email = user.email || "User";
+    const username = user.displayName || localStorage.getItem("username") || email.split("@")[0];
 
-        localStorage.setItem("username", username);
-        localStorage.setItem("email", email);
+    localStorage.setItem("username", username);
+    localStorage.setItem("email", email);
 
-        // ---- Nav dropdown (only present if loggedOut/loggedIn exist) ----
-        if (loggedOut && loggedIn) {
-            const avatarElem = document.getElementById("user-avatar");
-            if (avatarElem) avatarElem.textContent = username.charAt(0).toUpperCase();
+    if (loggedOut && loggedIn) {
+      const avatarElem = document.getElementById("user-avatar");
+      if (avatarElem) avatarElem.textContent = username.charAt(0).toUpperCase();
 
-            const nameElem = document.getElementById("user-display-name");
-            if (nameElem) nameElem.textContent = username;
+      const nameElem = document.getElementById("user-display-name");
+      if (nameElem) nameElem.textContent = username;
 
-            const emailElem = document.getElementById("user-email");
-            if (emailElem) emailElem.textContent = email;
+      const emailElem = document.getElementById("user-email");
+      if (emailElem) emailElem.textContent = email;
 
-            loggedOut.style.display = "none";
-            loggedIn.style.display = "flex";
-        }
-
-        // ---- Profile page (only present on profile.html) ----
-        updateProfilePageUI(username, email);
-
-    } else if (cachedUsername) {
-        if (loggedOut && loggedIn) {
-            const avatarElem = document.getElementById("user-avatar");
-            if (avatarElem) avatarElem.textContent = cachedUsername.charAt(0).toUpperCase();
-
-            const nameElem = document.getElementById("user-display-name");
-            if (nameElem) nameElem.textContent = cachedUsername;
-
-            const emailElem = document.getElementById("user-email");
-            if (emailElem) emailElem.textContent = cachedEmail || "";
-
-            loggedOut.style.display = "none";
-            loggedIn.style.display = "flex";
-        }
-
-        updateProfilePageUI(cachedUsername, cachedEmail || "");
-
-    } else {
-        localStorage.removeItem("username");
-        localStorage.removeItem("email");
-
-        if (loggedOut && loggedIn) {
-            loggedOut.style.display = "flex";
-            loggedIn.style.display = "none";
-        }
-
-        // Not logged in and on profile.html — send them away
-        if (document.getElementById("profile-display-name")) {
-            window.location.href = "signup.html";
-        }
+      loggedOut.style.display = "none";
+      loggedIn.style.display = "flex";
     }
 
-    const nav = document.getElementById("user-nav-status");
-    if (nav) nav.style.visibility = "visible";
+    updateProfilePageUI(username, email);
+  } else if (cachedUsername) {
+    if (loggedOut && loggedIn) {
+      const avatarElem = document.getElementById("user-avatar");
+      if (avatarElem) avatarElem.textContent = cachedUsername.charAt(0).toUpperCase();
+
+      const nameElem = document.getElementById("user-display-name");
+      if (nameElem) nameElem.textContent = cachedUsername;
+
+      const emailElem = document.getElementById("user-email");
+      if (emailElem) emailElem.textContent = cachedEmail || "";
+
+      loggedOut.style.display = "none";
+      loggedIn.style.display = "flex";
+    }
+
+    updateProfilePageUI(cachedUsername, cachedEmail || "");
+  } else {
+    localStorage.removeItem("username");
+    localStorage.removeItem("email");
+
+    if (loggedOut && loggedIn) {
+      loggedOut.style.display = "flex";
+      loggedIn.style.display = "none";
+    }
+
+    if (document.getElementById("profile-display-name")) {
+      window.location.href = "signup.html";
+    }
+  }
+
+  const nav = document.getElementById("user-nav-status");
+  if (nav) nav.style.visibility = "visible";
 }
 
 function updateProfilePageUI(username, email) {
-    const nameElem = document.getElementById("profile-display-name");
-    if (nameElem) nameElem.textContent = username;
+  const nameElem = document.getElementById("profile-display-name");
+  if (nameElem) nameElem.textContent = username;
 
-    const emailElem = document.getElementById("profile-email");
-    if (emailElem) emailElem.textContent = email;
+  const emailElem = document.getElementById("profile-email");
+  if (emailElem) emailElem.textContent = email;
 
-    const avatarElem = document.getElementById("profile-avatar-large");
-    if (avatarElem) avatarElem.textContent = username.charAt(0).toUpperCase();
+  const avatarElem = document.getElementById("profile-avatar-large");
+  if (avatarElem) avatarElem.textContent = username.charAt(0).toUpperCase();
 }
 
 // ── AUTHENTICATION FUNCTIONS ──
@@ -163,29 +150,20 @@ function handleSignup(event) {
   event.preventDefault();
   const email = document.getElementById('signup-email').value;
   const password = document.getElementById('signup-password').value;
+  const fullName = document.getElementById("signup-name").value;
 
- const fullName = document.getElementById("signup-name").value;
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(async (userCredential) => {
+      const user = userCredential.user;
+      await user.updateProfile({ displayName: fullName });
 
-auth.createUserWithEmailAndPassword(email, password)
-.then(async (userCredential) => {
-
-    const user = userCredential.user;
-
-    await user.updateProfile({
-        displayName: fullName
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("username", fullName);
+      localStorage.setItem("email", user.email);
+    })
+    .catch((error) => {
+      alert(error.message);
     });
-
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("username", fullName);
-    localStorage.setItem("email", user.email);
-
-
-})
-.catch((error) => {
-
-    alert(error.message);
-
-});
 }
 
 function handleLogin(event) {
@@ -194,24 +172,22 @@ function handleLogin(event) {
   const password = document.getElementById('login-password').value;
 
   auth.signInWithEmailAndPassword(email, password)
-  .then((userCredential) => {
+    .then((userCredential) => {
+      const user = userCredential.user;
+      const username = user.displayName || user.email.split("@")[0];
 
-  const user = userCredential.user;
-  const username = user.displayName || user.email.split("@")[0];
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("username", username);
+      localStorage.setItem("email", user.email);
 
-  localStorage.setItem("isLoggedIn", "true");
-  localStorage.setItem("username", username);
-  localStorage.setItem("email", user.email);
-
-  window.location.href = "detect.html";
-})
+      window.location.href = "detect.html";
+    })
     .catch((error) => {
       alert("Login Error: " + error.message);
     });
 }
 
 function handleLogout() {
-
   localStorage.removeItem("isLoggedIn");
   localStorage.removeItem("username");
   localStorage.removeItem("email");
@@ -219,14 +195,13 @@ function handleLogout() {
   auth.signOut().then(() => {
     window.location.href = "index.html";
   });
-
 }
 
 window.handleSignup = handleSignup;
 window.handleLogin = handleLogin;
 window.handleLogout = handleLogout;
 
-// ── CARD VISIBILITY HELPER (Mobile Overrides Safe) ──
+// ── CARD VISIBILITY HELPER ──
 function hideCard(card) {
   if (!card) return;
   card.style.display = 'none';
@@ -257,18 +232,15 @@ function handleFile(e) {
 
   if (fileNameEl) fileNameEl.textContent = file.name;
   if (fileSizeEl) fileSizeEl.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
-  
-  if (filePreviewEl) {
-    filePreviewEl.style.display = 'flex';
-  }
-  
+
+  if (filePreviewEl) filePreviewEl.style.display = 'flex';
+
   if (detectBtn) {
     detectBtn.disabled = false;
     detectBtn.style.opacity = '1';
     detectBtn.style.cursor = 'pointer';
   }
 
-  // Hide loading and results cards safely
   hideCard(document.getElementById('results-card'));
   hideCard(document.getElementById('loading-card'));
 }
@@ -282,14 +254,13 @@ function clearFile() {
 
   if (fileInput) fileInput.value = '';
   if (filePreviewEl) filePreviewEl.style.display = 'none';
-  
+
   if (detectBtn) {
     detectBtn.disabled = true;
     detectBtn.style.opacity = '0.6';
     detectBtn.style.cursor = 'not-allowed';
   }
-  
-  // Hide loading and results cards safely
+
   hideCard(document.getElementById('results-card'));
   hideCard(document.getElementById('loading-card'));
 }
@@ -297,12 +268,9 @@ function clearFile() {
 window.handleFile = handleFile;
 window.clearFile = clearFile;
 
-// ── DETECTION ──
-// ── BACKEND CONFIG ──
+// ── DETECTION CONFIG ──
 const API_BASE_URL = "http://127.0.0.1:8000";
 
-
-// ── REAL EMOTION DETECTION ──
 async function runDetection() {
   if (!selectedFile) return;
 
@@ -310,10 +278,8 @@ async function runDetection() {
   const loadingCard = document.getElementById("loading-card");
   const detectBtn = document.getElementById("detect-btn");
 
-  // Hide previous result
   hideCard(resultsCard);
 
-  // Show loading
   if (loadingCard) {
     showCard(loadingCard);
     loadingCard.scrollIntoView({ behavior: "smooth" });
@@ -325,44 +291,27 @@ async function runDetection() {
     detectBtn.style.cursor = "not-allowed";
   }
 
-  // Reset loading steps
-  const steps = [
-    "step-video",
-    "step-audio",
-    "step-text",
-    "step-fusion"
-  ];
-
+  const steps = ["step-video", "step-audio", "step-text", "step-fusion"];
   steps.forEach(stepId => {
     const step = document.getElementById(stepId);
-
     if (step) {
       step.style.color = "#9bb8a9";
       step.style.fontWeight = "400";
     }
   });
 
-  // Activate first step
   const videoStep = document.getElementById("step-video");
-
   if (videoStep) {
     videoStep.style.color = "#22c55e";
     videoStep.style.fontWeight = "700";
   }
 
   try {
-
-    // Create multipart form data
     const formData = new FormData();
-
-    // IMPORTANT:
-    // Backend expects field name "file"
     formData.append("file", selectedFile);
 
-    // Update loading UI
     setTimeout(() => {
       const audioStep = document.getElementById("step-audio");
-
       if (audioStep) {
         audioStep.style.color = "#22c55e";
         audioStep.style.fontWeight = "700";
@@ -371,62 +320,41 @@ async function runDetection() {
 
     setTimeout(() => {
       const textStep = document.getElementById("step-text");
-
       if (textStep) {
         textStep.style.color = "#22c55e";
         textStep.style.fontWeight = "700";
       }
     }, 1000);
 
-    // Call backend
     const response = await fetch(`${API_BASE_URL}/predict`, {
       method: "POST",
       body: formData
     });
 
-    // Backend error
     if (!response.ok) {
       let errorMessage = "Prediction failed.";
-
       try {
         const errorData = await response.json();
         errorMessage = errorData.detail || errorMessage;
-      } catch (e) {
-        // Ignore JSON parsing error
-      }
-
+      } catch (e) {}
       throw new Error(errorMessage);
     }
 
-    // Get backend response
     const data = await response.json();
-
     console.log("Backend response:", data);
 
-    // Fusion step
     const fusionStep = document.getElementById("step-fusion");
-
     if (fusionStep) {
       fusionStep.style.color = "#22c55e";
       fusionStep.style.fontWeight = "700";
     }
 
-    // Show REAL result
     showBackendResults(data);
-
   } catch (error) {
-
     console.error("Prediction Error:", error);
-
     hideCard(loadingCard);
-
-    alert(
-      "Unable to analyze the video.\n\n" +
-      "Error: " + error.message
-    );
-
+    alert("Unable to analyze the video.\n\nError: " + error.message);
   } finally {
-
     if (detectBtn) {
       detectBtn.disabled = false;
       detectBtn.style.opacity = "1";
@@ -436,212 +364,87 @@ async function runDetection() {
 }
 
 window.runDetection = runDetection;
-function showBackendResults(data) {
 
+function showBackendResults(data) {
   const loadingCard = document.getElementById("loading-card");
   const resultsCard = document.getElementById("results-card");
 
   hideCard(loadingCard);
 
-  // ─────────────────────────────
-  // Backend result
-  // ─────────────────────────────
-
   const emotion = data.predicted_emotion || "Unknown";
-
   const probabilities = data.probabilities || {};
-
-  // Highest probability
   const probabilityValues = Object.values(probabilities);
 
-  const confidence =
-    probabilityValues.length > 0
-      ? Math.max(...probabilityValues) * 100
-      : 0;
-
-
-  // ─────────────────────────────
-  // Main result
-  // ─────────────────────────────
+  const confidence = probabilityValues.length > 0 ? Math.max(...probabilityValues) * 100 : 0;
 
   const resultEmo = document.getElementById("result-emotion");
   const resultConf = document.getElementById("result-conf");
   const confFill = document.getElementById("conf-fill");
 
-  if (resultEmo) {
-    resultEmo.textContent = emotion;
-  }
-
-  if (resultConf) {
-    resultConf.textContent =
-      confidence.toFixed(1) + "% confidence";
-  }
+  if (resultEmo) resultEmo.textContent = emotion;
+  if (resultConf) resultConf.textContent = confidence.toFixed(1) + "% confidence";
 
   if (confFill) {
     setTimeout(() => {
-      confFill.style.width =
-        confidence.toFixed(1) + "%";
+      confFill.style.width = confidence.toFixed(1) + "%";
     }, 100);
   }
 
-
-  // ─────────────────────────────
-  // Modality section
-  // ─────────────────────────────
-
-  /*
-    IMPORTANT:
-
-    Current backend response only gives:
-    - predicted_emotion
-    - transcription
-    - probabilities
-
-    It does NOT currently return separate
-    video/audio/text predictions.
-
-    Therefore we should NOT show fake
-    modality results.
-  */
-
   const videoRes = document.getElementById("mod-video-result");
   const videoPct = document.getElementById("mod-video-pct");
-
   const audioRes = document.getElementById("mod-audio-result");
   const audioPct = document.getElementById("mod-audio-pct");
-
   const textRes = document.getElementById("mod-text-result");
   const textPct = document.getElementById("mod-text-pct");
 
   if (videoRes) videoRes.textContent = "Analyzed";
   if (videoPct) videoPct.textContent = "—";
-
   if (audioRes) audioRes.textContent = "Analyzed";
   if (audioPct) audioPct.textContent = "—";
-
   if (textRes) textRes.textContent = "Analyzed";
   if (textPct) textPct.textContent = "—";
-
-
-  // ─────────────────────────────
-  // Probability bars
-  // ─────────────────────────────
 
   const probsEl = document.getElementById("prob-bars");
 
   if (probsEl) {
-
-    const emotionOrder = [
-      "Anger",
-      "Happy",
-      "Love",
-      "Neutral",
-      "Sad"
-    ];
+    const emotionOrder = ["Anger", "Happy", "Love", "Neutral", "Sad"];
 
     probsEl.innerHTML = emotionOrder
       .filter(label => probabilities[label] !== undefined)
       .map(label => {
-
-        const value =
-          probabilities[label] * 100;
-
-        const isTop =
-          label.toLowerCase() === emotion.toLowerCase();
+        const value = probabilities[label] * 100;
+        const isTop = label.toLowerCase() === emotion.toLowerCase();
 
         return `
           <div class="prob-row" style="margin-bottom:0.8rem;">
-
-            <div style="
-              display:flex;
-              justify-content:space-between;
-              color:#f2f5ee;
-              font-size:0.9rem;
-              margin-bottom:0.3rem;
-            ">
+            <div style="display:flex; justify-content:space-between; color:#f2f5ee; font-size:0.9rem; margin-bottom:0.3rem;">
               <span>${label}</span>
               <span>${value.toFixed(1)}%</span>
             </div>
-
-            <div style="
-              background:#1b3528;
-              height:8px;
-              border-radius:99px;
-              overflow:hidden;
-            ">
-
-              <div
-                style="
-                  width:0%;
-                  height:100%;
-                  background:${isTop ? "#22c55e" : "#64748b"};
-                  transition:width 0.8s ease;
-                "
-                data-value="${value}"
-              ></div>
-
+            <div style="background:#1b3528; height:8px; border-radius:99px; overflow:hidden;">
+              <div style="width:0%; height:100%; background:${isTop ? "#22c55e" : "#64748b"}; transition:width 0.8s ease;" data-value="${value}"></div>
             </div>
-
           </div>
         `;
-
       })
       .join("");
 
-
-    // Animate bars
     setTimeout(() => {
-
-      probsEl
-        .querySelectorAll("[data-value]")
-        .forEach(bar => {
-
-          bar.style.width =
-            bar.dataset.value + "%";
-
-        });
-
+      probsEl.querySelectorAll("[data-value]").forEach(bar => {
+        bar.style.width = bar.dataset.value + "%";
+      });
     }, 100);
   }
 
-
-  // ─────────────────────────────
-  // Show transcription
-  // ─────────────────────────────
-
-  console.log(
-    "Transcription:",
-    data.transcription
-  );
-
-
-  // ─────────────────────────────
-  // Show results
-  // ─────────────────────────────
+  console.log("Transcription:", data.transcription);
 
   if (resultsCard) {
-
     showCard(resultsCard);
-
-    resultsCard.scrollIntoView({
-      behavior: "smooth"
-    });
-
+    resultsCard.scrollIntoView({ behavior: "smooth" });
   }
 
-
-  // ─────────────────────────────
-  // Save to Firebase History
-  // ─────────────────────────────
-
   if (selectedFile && currentUser) {
-
-    saveToFirestoreHistory(
-      selectedFile.name,
-      emotion,
-      confidence.toFixed(1)
-    );
-
+    saveToFirestoreHistory(selectedFile.name, emotion, confidence.toFixed(1));
   }
 }
 
@@ -691,7 +494,6 @@ function fetchHistoryFromFirestore() {
       let docsArray = [];
       querySnapshot.forEach(doc => docsArray.push(doc.data()));
 
-      // Sort client-side safely without needing complex Firestore composite indexes
       docsArray.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
 
       let itemsHTML = '';
@@ -754,14 +556,9 @@ window.clearAllHistory = clearAllHistory;
 
 // ── DOM INITIALIZATION ──
 document.addEventListener('DOMContentLoaded', () => {
-
-
-
-  // Ensure cards start in clean state
   hideCard(document.getElementById('loading-card'));
   hideCard(document.getElementById('results-card'));
 
-  // Drag and drop initialization
   const dropZone = document.getElementById('upload-zone');
   if (dropZone) {
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -785,18 +582,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Navbar Active Link Highlighting
-  const currentPath = window.location.pathname.split("/").pop() || "index.html";
+  const activePath = window.location.pathname.split("/").pop() || "index.html";
   const navLinks = document.querySelectorAll(".nav-links a");
 
   navLinks.forEach((link) => {
     link.classList.remove("active");
-    if (link.getAttribute("href") === currentPath) {
+    if (link.getAttribute("href") === activePath) {
       link.classList.add("active");
     }
   });
 });
-
 
 function loadMemberSince(user) {
   const memberSinceEl = document.getElementById("stat-member-since");
@@ -806,7 +601,7 @@ function loadMemberSince(user) {
   const formattedDate = creationDate.toLocaleDateString("en-US", {
     month: "short",
     year: "numeric"
-  }); // Output: "Mar 2026"
+  });
 
   memberSinceEl.textContent = formattedDate;
 }
@@ -818,12 +613,10 @@ async function loadUserStatsFromFirestore(user) {
   const emotionTextEl = document.getElementById("stat-emotion-text");
 
   try {
-    // Current user ka detection history fetch karna
     const snapshot = await db.collection("history")
       .where("userId", "==", user.uid)
       .get();
 
-    // 1. Total Detections Count
     const totalCount = snapshot.size;
     if (totalDetectionsEl) {
       totalDetectionsEl.textContent = totalCount;
@@ -834,7 +627,6 @@ async function loadUserStatsFromFirestore(user) {
       return;
     }
 
-    // 2. Most Common Emotion Calculate Karna
     const emotionCounts = {};
     snapshot.forEach(doc => {
       const data = doc.data();
@@ -854,15 +646,12 @@ async function loadUserStatsFromFirestore(user) {
     }
 
     if (emotionTextEl) {
-      // First letter Capitalize karna (e.g. "happy" -> "Happy")
       emotionTextEl.textContent = mostCommon.charAt(0).toUpperCase() + mostCommon.slice(1);
     }
-
   } catch (error) {
     console.error("Error in loading state:", error);
   }
 }
-
 
 function populateAccountForm(user) {
   if (!user) return;
@@ -893,7 +682,6 @@ async function handleAccountSave(event) {
   const newPassword = newPassInput ? newPassInput.value : "";
   const confirmPassword = confirmPassInput ? confirmPassInput.value : "";
 
-  // Visual Loading State
   if (saveBtn) {
     saveBtn.disabled = true;
     saveBtn.textContent = "Saving...";
@@ -902,20 +690,18 @@ async function handleAccountSave(event) {
   try {
     let updated = false;
 
-    // 1. Update Display Name
     if (newName && newName !== currentUser.displayName) {
       await currentUser.updateProfile({ displayName: newName });
       localStorage.setItem("username", newName);
       updated = true;
     }
 
-    // 2. Update Password (If entered)
     if (newPassword || confirmPassword) {
       if (newPassword !== confirmPassword) {
         throw new Error("New Password and Confirm Password do not match.");
       }
       if (newPassword.length < 6) {
-        throw new Error("Password must be atleast 6 characters long.");
+        throw new Error("Password must be at least 6 characters long.");
       }
 
       await currentUser.updatePassword(newPassword);
@@ -926,15 +712,12 @@ async function handleAccountSave(event) {
 
     if (updated) {
       alert("Updated account details successfully!");
-      updateUserUI(currentUser); // Navbar/Avatar refresh
+      updateUserUI(currentUser);
     } else {
       alert("Nothing changed.");
     }
-
   } catch (error) {
     console.error("Account update error:", error);
-    
-    // Agar Firebase re-authentication ki zaroorat ho (sensitive operation)
     if (error.code === 'auth/requires-recent-login') {
       alert("For security reasons you must log in again before changing your password.");
     } else {
@@ -947,7 +730,6 @@ async function handleAccountSave(event) {
     }
   }
 }
-
 
 window.handleAccountSave = handleAccountSave;
 
@@ -962,15 +744,11 @@ async function handleSignOutAll() {
   }
 
   try {
-    // Local storage data clear
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("username");
     localStorage.removeItem("email");
 
-    // Firebase Sign Out
     await auth.signOut();
-
-    // Redirect to index / login page
     window.location.href = "index.html";
   } catch (error) {
     console.error("Sign Out Error:", error);
@@ -983,16 +761,14 @@ async function handleSignOutAll() {
 }
 window.handleSignOutAll = handleSignOutAll;
 
-
 async function handleDeleteAccount() {
   if (!currentUser) {
     alert("Login first!");
     return;
   }
 
-  // Safety Confirmation
   const confirmDelete = confirm(
-    "WARNING: Are you sure you want to delete your account and all detection history.This action can not be undone"
+    "WARNING: Are you sure you want to delete your account and all detection history? This action cannot be undone."
   );
 
   if (!confirmDelete) return;
@@ -1006,7 +782,6 @@ async function handleDeleteAccount() {
   try {
     const userId = currentUser.uid;
 
-    // 1. Firestore se User ki Detection History clear karna
     const historySnapshot = await db.collection("history")
       .where("userId", "==", userId)
       .get();
@@ -1017,21 +792,17 @@ async function handleDeleteAccount() {
     });
     await batch.commit();
 
-    // 2. Firebase Auth se User account delete karna
     await currentUser.delete();
 
-    // 3. Local Cache Clear
     localStorage.clear();
 
     alert("Your account and all detection history have been deleted successfully.");
     window.location.href = "index.html";
-
   } catch (error) {
     console.error("Account Deletion Error:", error);
 
-    // Re-authentication Error handling
     if (error.code === "auth/requires-recent-login") {
-      alert("For security reasons, it is mendatory to log in again before performing sensitive actions(Account delete). Please log out and log in again");
+      alert("For security reasons, it is mandatory to log in again before deleting your account.");
     } else {
       alert("Error while deleting account: " + error.message);
     }
@@ -1043,7 +814,6 @@ async function handleDeleteAccount() {
   }
 }
 window.handleDeleteAccount = handleDeleteAccount;
-
 
 function timeAgo(date) {
   if (!date) return 'Just now';
@@ -1060,7 +830,6 @@ function timeAgo(date) {
 
   return 'Just now';
 }
-
 
 async function fetchRecentActivityFromFirestore(user) {
   const container = document.getElementById('recent-activity-list');
@@ -1079,18 +848,15 @@ async function fetchRecentActivityFromFirestore(user) {
     let docsArray = [];
     snapshot.forEach(doc => docsArray.push(doc.data()));
 
-    // 1. Sort latest first
     docsArray.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
 
-    // 2. Take maximum 3 items
     const recentItems = docsArray.slice(0, 3);
 
     let html = '';
     recentItems.forEach((item) => {
       const emoName = item.emotion || item.predicted_emotion || 'Unknown';
       const conf = item.conf || item.confidence || '--';
-      
-      // Calculate relative time
+
       let timeStr = 'Just now';
       if (item.timestamp) {
         timeStr = timeAgo(item.timestamp.toDate());
@@ -1106,7 +872,6 @@ async function fetchRecentActivityFromFirestore(user) {
     });
 
     container.innerHTML = html;
-
   } catch (error) {
     console.error("Recent Activity Fetch Error:", error);
     container.innerHTML = '<div style="color:#ef4444; font-size:0.85rem;">Failed to load activity.</div>';
