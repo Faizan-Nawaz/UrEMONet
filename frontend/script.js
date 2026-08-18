@@ -269,7 +269,7 @@ window.handleFile = handleFile;
 window.clearFile = clearFile;
 
 // ── DETECTION CONFIG ──
-
+const API_BASE_URL = "http://127.0.0.1:8000";
 
 // ── DUMMY/MOCK DETECTION FOR FRONTEND DEMO ──
 async function runDetection() {

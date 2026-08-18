@@ -243,6 +243,59 @@
     margin-top: 14px;
     text-decoration:none;
   }
+
+
+  @media (max-width: 720px) {
+
+  main{
+    padding: 20px 16px 80px;
+  }
+
+  /* Banner: stack avatar + info + button vertically */
+  .profile-banner{
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px 22px;
+    gap: 16px;
+  }
+  .edit-btn{
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Stats: 3 columns -> 1 column */
+  .stats-row{
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Left/right columns: side-by-side -> stacked */
+  .grid-2{
+    grid-template-columns: 1fr;
+  }
+
+  /* Full Name / Email fields: side-by-side -> stacked */
+  .field-row{
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .card{
+    padding: 20px;
+  }
+
+  /* Danger zone rows: button was cramped next to long text */
+  .danger-row{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .danger-btn{
+    width: 100%;
+    text-align: center;
+  }
+}
 </style>
 
 <!-- Firebase SDKs -->
