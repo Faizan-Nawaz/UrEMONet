@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- IMPORTANT: Ye tag mobile responsiveness ke liye sabse zaruri hai -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UrEMONet — Profile</title>
 <style>
   :root{
@@ -16,11 +18,18 @@
     --text-muted: #5c655d;
     --border: rgba(0,0,0,0.08);
   }
-  *{box-sizing:border-box;margin:0;padding:0;}
+
+  *{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
   body{
-    font-family: -apple-system, "Inter", "Segoe UI", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
     background: var(--cream);
     color: var(--text-dark);
+    line-height: 1.5;
   }
 
   /* ---------- PAGE LAYOUT ---------- */
@@ -28,6 +37,7 @@
     max-width: 1000px;
     margin: 0 auto;
     padding: 32px 24px 100px;
+    width: 100%;
   }
 
   /* ---------- BACK BUTTON ---------- */
@@ -56,8 +66,8 @@
     background: var(--dark);
     border-radius: 20px;
     padding: 40px;
-    display:flex;
-    align-items:center;
+    display: flex;
+    align-items: center;
     gap: 26px;
     color: var(--cream);
     margin-bottom: 28px;
@@ -65,35 +75,35 @@
     overflow: hidden;
   }
   .profile-banner:before{
-    content:"";
-    position:absolute;
-    right:-60px; top:-60px;
-    width:220px;height:220px;
+    content: "";
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 220px; height: 220px;
     background: radial-gradient(circle, rgba(34,197,94,0.18), transparent 70%);
   }
   .profile-avatar{
-    width:84px;height:84px;border-radius:50%;
+    width: 84px; height: 84px; border-radius: 50%;
     background: linear-gradient(135deg, var(--green), var(--green-deep));
-    display:flex;align-items:center;justify-content:center;
-    color:#fff;font-weight:700;font-size:28px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 28px;
     border: 3px solid rgba(255,255,255,0.15);
-    flex-shrink:0;
-    z-index:1;
+    flex-shrink: 0;
+    z-index: 1;
   }
-  .profile-banner-info{ z-index:1; }
-  .profile-name{ font-size: 22px; font-weight:700; margin-bottom:4px; }
-  .profile-email{ font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
+  .profile-banner-info{ z-index: 1; word-break: break-word; }
+  .profile-name{ font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .profile-email{ font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 10px; word-break: break-all; }
   .plan-pill{
-    display:inline-flex; align-items:center; gap:6px;
-    font-size: 10.5px; font-weight:700; letter-spacing:.03em;
-    padding: 4px 10px; border-radius:999px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .03em;
+    padding: 4px 10px; border-radius: 999px;
     background: rgba(34,197,94,0.15);
     color: var(--green);
   }
 
   /* ---------- STATS ROW ---------- */
   .stats-row{
-    display:grid;
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 18px;
     margin-bottom: 28px;
@@ -104,14 +114,14 @@
     border-radius: 14px;
     padding: 20px 22px;
   }
-  .stat-label{ font-size:12px; color:var(--text-muted); margin-bottom:8px; }
-  .stat-value{ font-size:24px; font-weight:700; }
-  .stat-value.emotion{ display:flex; align-items:center; gap:8px; }
-  .emo-dot{ width:10px;height:10px;border-radius:50%; background: var(--green); }
+  .stat-label{ font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+  .stat-value{ font-size: 24px; font-weight: 700; }
+  .stat-value.emotion{ display: flex; align-items: center; gap: 8px; }
+  .emo-dot{ width: 10px; height: 10px; border-radius: 50%; background: var(--green); display: inline-block; }
 
   /* ---------- TWO COLUMN LAYOUT ---------- */
   .grid-2{
-    display:grid;
+    display: grid;
     grid-template-columns: 1.4fr 1fr;
     gap: 20px;
   }
@@ -136,42 +146,45 @@
 
   /* Account details form */
   .field-row{
-    display:grid;
+    display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
     margin-bottom: 16px;
   }
   .field{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
   .field label{
     font-size: 11.5px;
-    font-weight:600;
+    font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: .02em;
   }
   .field input{
-    padding: 10px 12px;
-    border-radius: 99px;
+    padding: 10px 14px;
+    border-radius: 10px;
     border: 1px solid var(--border);
     background: var(--cream);
     font-size: 13.5px;
     color: var(--text-dark);
+    width: 100%;
+    outline: none;
   }
-  .field input:disabled{ color: var(--text-muted); }
+  .field input:disabled{ color: var(--text-muted); opacity: 0.7; }
   .save-btn{
     background: var(--dark);
     color: var(--cream);
-    border:none;
+    border: none;
     padding: 11px 22px;
     border-radius: 10px;
     font-size: 13px;
     font-weight: 700;
-    cursor:pointer;
+    cursor: pointer;
     margin-top: 6px;
+    width: auto;
   }
 
   /* Danger zone */
@@ -179,12 +192,12 @@
     border: 1px solid rgba(176,65,62,0.25);
   }
   .danger-row{
-    display:flex;align-items:center;justify-content:space-between;
-    padding: 10px 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0;
   }
   .danger-row + .danger-row{ border-top: 1px solid var(--border); }
-  .danger-row .label{ font-size:13.5px; font-weight:600; }
-  .danger-row .desc{ font-size:11.5px; color:var(--text-muted); margin-top:2px; }
+  .danger-row .label{ font-size: 13.5px; font-weight: 600; }
+  .danger-row .desc{ font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
   .danger-btn{
     background: #fff;
     border: 1px solid rgba(176,65,62,0.4);
@@ -193,7 +206,8 @@
     font-weight: 700;
     padding: 8px 14px;
     border-radius: 8px;
-    cursor:pointer;
+    cursor: pointer;
+    white-space: nowrap;
   }
 
   /* Sidebar: subscription card */
@@ -201,101 +215,98 @@
     background: var(--dark);
     color: var(--cream);
   }
-  .sub-card .card-title{ color:#fff; }
+  .sub-card .card-title{ color: #fff; }
   .sub-card .card-sub{ color: rgba(255,255,255,0.5); }
-  .sub-plan-name{ font-size:20px; font-weight:700; margin-bottom:2px; }
-  .sub-plan-detail{ font-size:12px; color: rgba(255,255,255,0.55); margin-bottom:18px; }
-  .sub-features{ list-style:none; font-size:12.5px; margin-bottom:20px; }
-  .sub-features li{ padding:5px 0; display:flex; gap:8px; color: rgba(255,255,255,0.75); }
-  .sub-features li:before{ content:"✓"; color: var(--green); font-weight:700; }
+  .sub-plan-name{ font-size: 20px; font-weight: 700; margin-bottom: 2px; }
+  .sub-plan-detail{ font-size: 12px; color: rgba(255,255,255,0.55); margin-bottom: 18px; }
+  .sub-features{ list-style: none; font-size: 12.5px; margin-bottom: 20px; }
+  .sub-features li{ padding: 5px 0; display: flex; gap: 8px; color: rgba(255,255,255,0.75); }
+  .sub-features li:before{ content: "✓"; color: var(--green); font-weight: 700; }
   .upgrade-btn{
-    display:block; width:100%; text-align:center;
-    background: var(--green); color:#08240f;
-    padding: 11px; border-radius:10px;
-    font-size:13px; font-weight:700; border:none; cursor:pointer;
+    display: block; width: 100%; text-align: center;
+    background: var(--green); color: #08240f;
+    padding: 11px; border-radius: 10px;
+    font-size: 13px; font-weight: 700; border: none; cursor: pointer;
   }
   .mock-note{
     font-size: 10.5px;
     color: rgba(255,255,255,0.35);
-    text-align:center;
+    text-align: center;
     margin-top: 10px;
     font-style: italic;
   }
 
   /* Sidebar: recent activity */
   .activity-item{
-    display:flex; align-items:center; gap:10px;
+    display: flex; align-items: center; gap: 10px;
     padding: 9px 0;
     font-size: 12.5px;
   }
   .activity-item + .activity-item{ border-top: 1px solid var(--border); }
   .activity-emo{
-    width:8px;height:8px;border-radius:50%;
+    width: 8px; height: 8px; border-radius: 50%;
     background: var(--green);
-    flex-shrink:0;
+    flex-shrink: 0;
   }
-  .activity-item .txt{ flex:1; }
-  .activity-item .time{ color: var(--text-muted); font-size:11px; }
+  .activity-item .txt{ flex: 1; }
+  .activity-item .time{ color: var(--text-muted); font-size: 11px; }
   .view-all{
-    display:block; text-align:center;
-    font-size:12.5px; font-weight:600;
+    display: block; text-align: center;
+    font-size: 12.5px; font-weight: 600;
     color: var(--green-deep);
     margin-top: 14px;
-    text-decoration:none;
+    text-decoration: none;
   }
 
+  /* ======================================================
+     MOBILE RESPONSIVE MEDIA QUERIES (Fixes applied here)
+     ====================================================== */
+  @media screen and (max-width: 768px) {
+    main {
+      padding: 16px 12px 60px;
+    }
 
-  @media (max-width: 720px) {
+    /* Banner stacks elements vertically on mobile */
+    .profile-banner {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 24px 20px;
+      gap: 16px;
+    }
 
-  main{
-    padding: 20px 16px 80px;
-  }
+    /* 3 stat boxes change to single column stack */
+    .stats-row {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
 
-  /* Banner: stack avatar + info + button vertically */
-  .profile-banner{
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 28px 22px;
-    gap: 16px;
-  }
-  .edit-btn{
-    margin-left: 0;
-    width: 100%;
-    text-align: center;
-  }
+    /* Left and Right columns stack vertically */
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
 
-  /* Stats: 3 columns -> 1 column */
-  .stats-row{
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
+    /* Form input fields stack vertically */
+    .field-row {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
 
-  /* Left/right columns: side-by-side -> stacked */
-  .grid-2{
-    grid-template-columns: 1fr;
-  }
+    .card {
+      padding: 20px 16px;
+    }
 
-  /* Full Name / Email fields: side-by-side -> stacked */
-  .field-row{
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
+    /* Danger zone items wrap nicely */
+    .danger-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
 
-  .card{
-    padding: 20px;
+    .danger-btn, .save-btn {
+      width: 100%;
+      text-align: center;
+    }
   }
-
-  /* Danger zone rows: button was cramped next to long text */
-  .danger-row{
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .danger-btn{
-    width: 100%;
-    text-align: center;
-  }
-}
 </style>
 
 <!-- Firebase SDKs -->
@@ -307,7 +318,6 @@
 <script src="script.js"></script>
 
 <link rel="icon" type="image/png" href="assets/favicon_512_square.png">
-
 </head>
 <body>
 
@@ -322,86 +332,84 @@
   <div class="profile-banner">
     <div class="profile-avatar" id="profile-avatar-large">U</div>
     <div class="profile-banner-info">
-      
       <div class="profile-name" id="profile-display-name">Loading...</div>
       <div class="profile-email" id="profile-email">Loading...</div>
       <div class="plan-pill" id="profile-plan-pill">● FREE PLAN</div>
     </div>
-    
-</div>
+  </div>
 
   <!-- Stats Row -->
-<div class="stats-row">
-  <div class="stat-card">
-    <div class="stat-label">Total Detections</div>
-    <div class="stat-value" id="stat-total-detections">0</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-label">Most Common Emotion</div>
-    <div class="stat-value emotion" id="stat-common-emotion">
-      <span class="emo-dot"></span><span id="stat-emotion-text">--</span>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total Detections</div>
+      <div class="stat-value" id="stat-total-detections">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Most Common Emotion</div>
+      <div class="stat-value emotion" id="stat-common-emotion">
+        <span class="emo-dot"></span><span id="stat-emotion-text">--</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Member Since</div>
+      <div class="stat-value" id="stat-member-since">--</div>
     </div>
   </div>
-  <div class="stat-card">
-    <div class="stat-label">Member Since</div>
-    <div class="stat-value" id="stat-member-since">--</div>
-  </div>
-</div>
 
   <div class="grid-2">
     <!-- Left column -->
     <div>
       <form class="card" id="account-details-form" onsubmit="handleAccountSave(event)">
-  <div class="card-title">Account Details</div>
-  <div class="card-sub">Update your personal information</div>
+        <div class="card-title">Account Details</div>
+        <div class="card-sub">Update your personal information</div>
 
-  <div class="field-row">
-    <div class="field">
-      <label>Full Name</label>
-      <input type="text" id="account-full-name" placeholder="Enter full name" required>
-    </div>
-    <div class="field">
-      <label>Email Address</label>
-      <input type="email" id="account-email" disabled>
-    </div>
-  </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Full Name</label>
+            <input type="text" id="account-full-name" placeholder="Enter full name" required>
+          </div>
+          <div class="field">
+            <label>Email Address</label>
+            <input type="email" id="account-email" disabled>
+          </div>
+        </div>
 
-  <div class="field-row">
-    <div class="field">
-      <label>New Password</label>
-      <input type="password" id="account-new-password" placeholder="••••••••">
-    </div>
-    <div class="field">
-      <label>Confirm Password</label>
-      <input type="password" id="account-confirm-password" placeholder="••••••••">
-    </div>
-  </div>
+        <div class="field-row">
+          <div class="field">
+            <label>New Password</label>
+            <input type="password" id="account-new-password" placeholder="••••••••">
+          </div>
+          <div class="field">
+            <label>Confirm Password</label>
+            <input type="password" id="account-confirm-password" placeholder="••••••••">
+          </div>
+        </div>
 
-  <button type="submit" class="save-btn" id="save-account-btn">Save Changes</button>
-</form>
+        <button type="submit" class="save-btn" id="save-account-btn">Save Changes</button>
+      </form>
 
       <div class="card danger-card">
-  <div class="card-title">Account</div>
-  <div class="card-sub">Manage your session and data</div>
+        <div class="card-title">Account</div>
+        <div class="card-sub">Manage your session and data</div>
 
-  <!-- Sign Out Row -->
-  <div class="danger-row">
-    <div>
-      <div class="label">Sign out of all devices</div>
-      <div class="desc">End every active session for this account</div>
-    </div>
-    <button class="danger-btn" id="sign-out-all-btn" onclick="handleSignOutAll()">Sign Out All</button>
-  </div>
+        <!-- Sign Out Row -->
+        <div class="danger-row">
+          <div>
+            <div class="label">Sign out of all devices</div>
+            <div class="desc">End every active session for this account</div>
+          </div>
+          <button class="danger-btn" id="sign-out-all-btn" onclick="handleSignOutAll()">Sign Out All</button>
+        </div>
 
-  <!-- Delete Account Row -->
-  <div class="danger-row">
-    <div>
-      <div class="label">Delete account</div>
-      <div class="desc">Permanently remove your account and history</div>
-    </div>
-    <button class="danger-btn" id="delete-account-btn" onclick="handleDeleteAccount()">Delete</button>
-  </div>
-</div>
+        <!-- Delete Account Row -->
+        <div class="danger-row">
+          <div>
+            <div class="label">Delete account</div>
+            <div class="desc">Permanently remove your account and history</div>
+          </div>
+          <button class="danger-btn" id="delete-account-btn" onclick="handleDeleteAccount()">Delete</button>
+        </div>
+      </div>
     </div>
 
     <!-- Right column -->
@@ -420,16 +428,16 @@
       </div>
 
       <div class="card">
-  <div class="card-title">Recent Activity</div>
-  <div class="card-sub">Your last few detections</div>
+        <div class="card-title">Recent Activity</div>
+        <div class="card-sub">Your last few detections</div>
 
-  <!-- Dynamic Container -->
-  <div id="recent-activity-list">
-    <div style="color: #9bb8a9; padding: 0.5rem 0; font-size: 0.9rem;">Loading recent activity...</div>
-  </div>
+        <!-- Dynamic Container -->
+        <div id="recent-activity-list">
+          <div style="color: #9bb8a9; padding: 0.5rem 0; font-size: 0.9rem;">Loading recent activity...</div>
+        </div>
 
-  <a href="history.html" class="view-all">View Full History →</a>
-</div>
+        <a href="history.html" class="view-all">View Full History →</a>
+      </div>
     </div>
   </div>
 

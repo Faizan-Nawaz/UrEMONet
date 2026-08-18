@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- IMPORTANT: Mobile Viewport Fix -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UrEMONet — Subscription</title>
 <style>
   :root{
@@ -18,12 +20,14 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{
-    font-family: -apple-system, "Inter", "Segoe UI", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
     background: var(--cream);
     color: var(--text-dark);
+    line-height: 1.5;
+    overflow-x: hidden; /* Prevents side scrolling on small screens */
   }
 
-  main{ max-width: 1100px; margin:0 auto; padding: 0 24px 110px; }
+  main{ max-width: 1100px; margin:0 auto; padding: 0 24px 110px; width: 100%; }
 
   /* ---------- HERO ---------- */
   .hero{
@@ -32,7 +36,6 @@
     padding: 32px 24px 90px;
     text-align:center;
     color: var(--cream);
-    margin: 0 -24px 0;
     position: relative;
     overflow:hidden;
   }
@@ -203,13 +206,17 @@
     text-align:center;
     margin-bottom: 28px;
   }
+  .table-wrapper{
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: var(--white);
+  }
   table{
     width:100%;
     border-collapse: collapse;
-    background: var(--white);
-    border-radius: 16px;
-    overflow:hidden;
-    border: 1px solid var(--border);
+    min-width: 500px; /* Ensures table stays readable on mobile */
   }
   th, td{
     padding: 14px 20px;
@@ -247,54 +254,58 @@
   .faq-q{ font-size:13.5px; font-weight:700; margin-bottom:6px; }
   .faq-a{ font-size:12.5px; color:var(--text-muted); line-height:1.5; }
 
+  /* ======================================================
+     MOBILE RESPONSIVE MEDIA QUERIES
+     ====================================================== */
+  @media screen and (max-width: 768px) {
 
-  @media (max-width: 720px) {
+    main{
+      padding: 0 16px 80px;
+    }
 
-  main{
-    padding: 0 16px 80px;
-  }
+    .hero{
+      padding: 32px 16px 70px;
+      border-radius: 0 0 20px 20px;
+    }
+    
+    .hero h1{
+      font-size: 26px;
+    }
 
-  .hero{
-    padding: 48px 20px 70px;
-    margin: 0 -16px 0;
-  }
-  .hero h1{
-    font-size: 26px;
-  }
+    .toggle span{
+      padding: 8px 14px;
+      font-size: 12px;
+    }
 
-  /* Plans: 3 columns -> 1 column, remove the "scale up" on Pro
-     since side-by-side scaling looks odd stacked */
-  .plans{
-    grid-template-columns: 1fr;
-    margin-top: 46px;
-  }
-  .plan-card.pro{
-    transform: none;
-    order: -1; /* show Pro first since it's the recommended plan */
-  }
+    /* 3 Plans columns stack into 1 column on mobile */
+    .plans{
+      grid-template-columns: 1fr;
+      margin-top: 40px;
+      gap: 20px;
+    }
 
-  /* Compare table: enable horizontal scroll instead of squeezing columns */
-  .compare{
-    margin-top: 50px;
-  }
-  .compare h2, .faq h2{
-    font-size: 19px;
-  }
-  table{
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-    border-radius: 12px;
-  }
-  th, td{
-    padding: 12px 16px;
-    font-size: 12.5px;
-  }
+    .plan-card.pro{
+      transform: none; /* Pro card scale balance on mobile */
+      order: -1;      /* Pro plan displays at top on mobile */
+    }
 
-  .faq-item{
-    padding: 16px 18px;
+    .compare{
+      margin-top: 50px;
+    }
+
+    .compare h2, .faq h2{
+      font-size: 20px;
+    }
+
+    th, td{
+      padding: 12px 14px;
+      font-size: 12.5px;
+    }
+
+    .faq-item{
+      padding: 16px;
+    }
   }
-}
 </style>
 
 <link rel="icon" type="image/png" href="assets/favicon_512_square.png">
@@ -371,50 +382,52 @@
   <!-- Compare table -->
   <div class="compare">
     <h2>Compare plans</h2>
-    <table>
-      <tr>
-        <th>Feature</th>
-        <th>Free</th>
-        <th>Pro</th>
-        <th>Team</th>
-      </tr>
-      <tr>
-        <td>Monthly detections</td>
-        <td>10</td>
-        <td class="check">Unlimited</td>
-        <td class="check">Unlimited</td>
-      </tr>
-      <tr>
-        <td>Processing speed</td>
-        <td>Standard</td>
-        <td class="check">Priority</td>
-        <td class="check">Priority</td>
-      </tr>
-      <tr>
-        <td>History retention</td>
-        <td>7 days</td>
-        <td class="check">Full</td>
-        <td class="check">Full</td>
-      </tr>
-      <tr>
-        <td>Batch upload</td>
-        <td class="dash">—</td>
-        <td class="check">✓</td>
-        <td class="check">✓</td>
-      </tr>
-      <tr>
-        <td>Team members</td>
-        <td class="dash">—</td>
-        <td class="dash">—</td>
-        <td class="check">Up to 5</td>
-      </tr>
-      <tr>
-        <td>API access</td>
-        <td class="dash">—</td>
-        <td class="dash">—</td>
-        <td class="check">✓</td>
-      </tr>
-    </table>
+    <div class="table-wrapper">
+      <table>
+        <tr>
+          <th>Feature</th>
+          <th>Free</th>
+          <th>Pro</th>
+          <th>Team</th>
+        </tr>
+        <tr>
+          <td>Monthly detections</td>
+          <td>10</td>
+          <td class="check">Unlimited</td>
+          <td class="check">Unlimited</td>
+        </tr>
+        <tr>
+          <td>Processing speed</td>
+          <td>Standard</td>
+          <td class="check">Priority</td>
+          <td class="check">Priority</td>
+        </tr>
+        <tr>
+          <td>History retention</td>
+          <td>7 days</td>
+          <td class="check">Full</td>
+          <td class="check">Full</td>
+        </tr>
+        <tr>
+          <td>Batch upload</td>
+          <td class="dash">—</td>
+          <td class="check">✓</td>
+          <td class="check">✓</td>
+        </tr>
+        <tr>
+          <td>Team members</td>
+          <td class="dash">—</td>
+          <td class="dash">—</td>
+          <td class="check">Up to 5</td>
+        </tr>
+        <tr>
+          <td>API access</td>
+          <td class="dash">—</td>
+          <td class="dash">—</td>
+          <td class="check">✓</td>
+        </tr>
+      </table>
+    </div>
   </div>
 
   <!-- FAQ -->
