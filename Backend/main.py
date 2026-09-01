@@ -70,7 +70,7 @@ async def lifespan(app: FastAPI):
     MODELS["w2v_model"] = Wav2Vec2Model.from_pretrained(w2v_name).to(device).eval()
 
     # 2. Transcription: Whisper
-    print("  -> Loading Whisper (small)...")
+    print("  -> Loading Whisper (Small)...")
     MODELS["whisper"] = whisper.load_model("small", device=str(device))
 
     # 3. Text Model: XLM-RoBERTa
@@ -305,7 +305,30 @@ def process_pipeline(video_path: str):
 
        
         with torch.no_grad():
-            logits = MODELS["fusion"](audio_feat, video_feat, text_feat)  # (1, 5)
+            # ─────────────────────────────────────────
+            # DEBUG: Gated Fusion Weights
+            # ─────────────────────────────────────────
+
+            fusion_model = MODELS["fusion"]
+
+            # Encode each modality
+            a = fusion_model.audio_encoder(audio_feat)
+            v = fusion_model.video_encoder(video_feat)
+            t = fusion_model.text_encoder(text_feat)
+
+            # Get gate weights
+            combined = torch.cat([a, v, t], dim=-1)
+            gate_weights = fusion_model.fusion.gate(combined)
+
+            print("\n===== GATE WEIGHTS =====")
+            print("Audio :", gate_weights[0, 0].item())
+            print("Video :", gate_weights[0, 1].item())
+            print("Text  :", gate_weights[0, 2].item())
+
+            # Normal model prediction
+            fused = fusion_model.fusion([a, v, t])
+            logits = fusion_model.classifier(fused)
+
             probs = F.softmax(logits, dim=-1).squeeze(0).cpu().numpy()
 
 

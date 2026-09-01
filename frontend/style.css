@@ -976,16 +976,15 @@ nav {
 }
 
 
-.user-chip{
-    display:flex;
-    align-items:center;
-    gap:.6rem;
-    cursor:pointer;
-    background:#12281c;
-    padding:.45rem .8rem;
-    border-radius:999px;
-    border:1px solid #22c55e;
-    padding: 6px;
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    cursor: pointer;
+    background: transparent; /* Changed from #12281c */
+    padding: 0;               /* Removed padding */
+    border-radius: 50%;
+    border: none;             /* Removed green border to eliminate the outer ring */
 }
 
 .avatar {

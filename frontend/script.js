@@ -271,7 +271,6 @@ window.clearFile = clearFile;
 // ── DETECTION CONFIG ──
 const API_BASE_URL = "http://127.0.0.1:8000";
 
-// ── DUMMY/MOCK DETECTION FOR FRONTEND DEMO ──
 async function runDetection() {
   if (!selectedFile) return;
 
@@ -292,7 +291,6 @@ async function runDetection() {
     detectBtn.style.cursor = "not-allowed";
   }
 
-  // Reset Step Colors
   const steps = ["step-video", "step-audio", "step-text", "step-fusion"];
   steps.forEach(stepId => {
     const step = document.getElementById(stepId);
@@ -302,57 +300,60 @@ async function runDetection() {
     }
   });
 
-  // Simulated Animation Pipeline (Backend ka wait kiye bina real feel dene ke liye)
+  const videoStep = document.getElementById("step-video");
+  if (videoStep) {
+    videoStep.style.color = "#22c55e";
+    videoStep.style.fontWeight = "700";
+  }
+
   try {
-    // Step 1: Video
-    const videoStep = document.getElementById("step-video");
-    if (videoStep) {
-      videoStep.style.color = "#22c55e";
-      videoStep.style.fontWeight = "700";
-    }
-    await new Promise(r => setTimeout(r, 800));
+    const formData = new FormData();
+    formData.append("file", selectedFile);
 
-    // Step 2: Audio
-    const audioStep = document.getElementById("step-audio");
-    if (audioStep) {
-      audioStep.style.color = "#22c55e";
-      audioStep.style.fontWeight = "700";
-    }
-    await new Promise(r => setTimeout(r, 800));
+    setTimeout(() => {
+      const audioStep = document.getElementById("step-audio");
+      if (audioStep) {
+        audioStep.style.color = "#22c55e";
+        audioStep.style.fontWeight = "700";
+      }
+    }, 500);
 
-    // Step 3: Text
-    const textStep = document.getElementById("step-text");
-    if (textStep) {
-      textStep.style.color = "#22c55e";
-      textStep.style.fontWeight = "700";
-    }
-    await new Promise(r => setTimeout(r, 800));
+    setTimeout(() => {
+      const textStep = document.getElementById("step-text");
+      if (textStep) {
+        textStep.style.color = "#22c55e";
+        textStep.style.fontWeight = "700";
+      }
+    }, 1000);
 
-    // Step 4: Fusion
+    const response = await fetch(`${API_BASE_URL}/predict`, {
+      method: "POST",
+      body: formData
+    });
+
+    if (!response.ok) {
+      let errorMessage = "Prediction failed.";
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.detail || errorMessage;
+      } catch (e) {}
+      throw new Error(errorMessage);
+    }
+
+    const data = await response.json();
+    console.log("Backend response:", data);
+
     const fusionStep = document.getElementById("step-fusion");
     if (fusionStep) {
       fusionStep.style.color = "#22c55e";
       fusionStep.style.fontWeight = "700";
     }
-    await new Promise(r => setTimeout(r, 600));
 
-    // Dummy Mock Data
-    const mockResponseData = {
-      predicted_emotion: "Happy",
-      transcription: "Urdu text demo transcription goes here...",
-      probabilities: {
-        "Anger": 0.05,
-        "Happy": 0.82,
-        "Love": 0.08,
-        "Neutral": 0.03,
-        "Sad": 0.02
-      }
-    };
-
-    showBackendResults(mockResponseData);
-
+    showBackendResults(data);
   } catch (error) {
-    console.error("Demo Error:", error);
+    console.error("Prediction Error:", error);
+    hideCard(loadingCard);
+    alert("Unable to analyze the video.\n\nError: " + error.message);
   } finally {
     if (detectBtn) {
       detectBtn.disabled = false;
